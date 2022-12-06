@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<IPartnerTypeService, PartnerTypeService>();
     builder.Services.AddScoped<IPartnerService, PartnerService>();
+    builder.Services.AddScoped<ICommissionMethodService, CommissionMethodService>();
+    builder.Services.AddScoped<IContractTypeService, ContractTypeService>();
 
     builder.Services.AddDbContext<VendorManagementDbContext>(options =>
          options.UseSqlServer(builder.Configuration.GetConnectionString("VendorMgmtConnectionString")));
@@ -27,7 +29,7 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
+    app.UseExceptionHandler("/error");
     app.UseHttpsRedirection();
 
     app.UseAuthorization();

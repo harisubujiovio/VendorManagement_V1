@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VendorMnagement.DBclient.Models
+namespace VendorManagement.Contracts
 {
-    public class ContractType : BaseEntity
+    public class ContractTypeRequest
     {
         public string Description { get; set; }
     }
