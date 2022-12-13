@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -7,11 +8,17 @@ namespace VendorMangement.API.Services.Authentication
 {
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
+        private readonly JwtSettings _jwtSettings;
+
+        public JwtTokenGenerator(IOptions<JwtSettings> jwtOptions)
+        {
+            _jwtSettings = jwtOptions.Value;
+        }
         public string GenerateJwtToken(Guid userId, string firstName, string lastName)
         {
             var signingCredentials = new SigningCredentials(
                   new SymmetricSecurityKey(
-                      Encoding.UTF8.GetBytes("vendor-portal-se")),
+                      Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
                   SecurityAlgorithms.HmacSha256
                 );
             var claims = new[]
@@ -23,8 +30,9 @@ namespace VendorMangement.API.Services.Authentication
             };
 
             var securityToken = new JwtSecurityToken(
-                issuer: "VendorPortalAPI",
-                expires: DateTime.UtcNow.AddDays(1),
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                expires: DateTime.UtcNow.AddDays(_jwtSettings.ExpiryDays),
                 claims: claims,
                 signingCredentials: signingCredentials);
 

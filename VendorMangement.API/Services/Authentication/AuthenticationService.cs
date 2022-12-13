@@ -30,8 +30,6 @@ namespace VendorMangement.API.Services.Authentication
             loginResponse.firstName = user.firstName;
             loginResponse.lastName = user.lastName;
             loginResponse.UserId = user.Guid;
-            loginResponse.token = "HardCoded Token";
-
             return loginResponse;
         }
 
