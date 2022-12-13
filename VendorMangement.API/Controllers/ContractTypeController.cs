@@ -5,9 +5,7 @@ using VendorMnagement.DBclient.Models;
 
 namespace VendorMangement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ContractTypeController : Controller
+    public class ContractTypeController : ApiController
     {
         public readonly IContractTypeService _contractTypeService;
 

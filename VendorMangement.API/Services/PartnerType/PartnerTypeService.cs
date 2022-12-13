@@ -1,4 +1,6 @@
-﻿using VendorMnagement.DBclient.Data;
+﻿using ErrorOr;
+using VendorMangement.API.ServiceErrors;
+using VendorMnagement.DBclient.Data;
 using VendorMnagement.DBclient.Models;
 namespace VendorMangement.API.Services
 {
@@ -10,30 +12,40 @@ namespace VendorMangement.API.Services
         {
             _vendorManagementDbContext = vendorManagementDbContext;
         }
-        public void CreatePartnerType(PartnerType partnerType)
+        public ErrorOr<Created> CreatePartnerType(PartnerType partnerType)
         {
             _vendorManagementDbContext.PartnerTypes.Add(partnerType);
             _vendorManagementDbContext.SaveChanges();
+
+            return Result.Created;
         }
 
-        public void DeletePartnerType(Guid id)
+        public ErrorOr<Deleted> DeletePartnerType(Guid id)
         {
             var partnerType = _vendorManagementDbContext.PartnerTypes.Find(id);
             _vendorManagementDbContext.PartnerTypes.Remove(partnerType);
+
+            return Result.Deleted;
         }
 
-        public PartnerType GetPartnerType(Guid id)
+        public ErrorOr<PartnerType> GetPartnerType(Guid id)
         {
-            return _vendorManagementDbContext.PartnerTypes.Find(id);   
+            PartnerType partnerType = _vendorManagementDbContext.PartnerTypes.Find(id);
+            if (partnerType != null)
+                return partnerType;
+
+            return Errors.PartnerType.NotFound;
         }
 
-        public void UpdatePartnerType(Guid id,PartnerType partnerType)
+        public ErrorOr<Updated> UpdatePartnerType(Guid id,PartnerType partnerType)
         {
             var dbpartnerType = _vendorManagementDbContext.PartnerTypes.Find(id);
             dbpartnerType.Description = partnerType.Description;
             dbpartnerType.LastModifiedBy = partnerType.LastModifiedBy;
             dbpartnerType.LastModifiedDate = partnerType.LastModifiedDate;
             _vendorManagementDbContext.SaveChanges();
+
+            return Result.Updated;
         }
     }
 }

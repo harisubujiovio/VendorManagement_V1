@@ -1,15 +1,16 @@
-﻿using VendorMnagement.DBclient.Models;
+﻿using ErrorOr;
+using VendorMnagement.DBclient.Models;
 namespace VendorMangement.API.Services
 {
     public interface IPartnerTypeService
     {
-        void CreatePartnerType(PartnerType partnerTypeRequest);
+        ErrorOr<Created> CreatePartnerType(PartnerType partnerTypeRequest);
 
-        PartnerType GetPartnerType(Guid id);
+        ErrorOr<PartnerType> GetPartnerType(Guid id);
 
-        void UpdatePartnerType(Guid id,PartnerType partnerTypeRequest);
+        ErrorOr<Updated> UpdatePartnerType(Guid id,PartnerType partnerTypeRequest);
 
-        void DeletePartnerType(Guid id);
+        ErrorOr<Deleted> DeletePartnerType(Guid id);
 
 
     }

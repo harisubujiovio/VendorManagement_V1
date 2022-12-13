@@ -5,9 +5,7 @@ using VendorMnagement.DBclient.Models;
 
 namespace VendorMangement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class PartnerController : ControllerBase
+    public class PartnerController : ApiController
     {
         public readonly IPartnerService _partnerService;
 

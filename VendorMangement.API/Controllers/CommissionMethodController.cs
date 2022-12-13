@@ -5,9 +5,7 @@ using VendorMnagement.DBclient.Models;
 
 namespace VendorMangement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class CommissionMethodController : Controller
+    public class CommissionMethodController : ApiController
     {
         public readonly ICommissionMethodService _commissionMethodeService;
 

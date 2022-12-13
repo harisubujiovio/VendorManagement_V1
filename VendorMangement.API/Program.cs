@@ -24,13 +24,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
-    // Configure the HTTP request pipeline.
+    //Configure the HTTP request pipeline.
+    app.UseExceptionHandler("/error");
+   
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-    app.UseExceptionHandler("/error");
+
     app.UseHttpsRedirection();
 
     app.UseAuthorization();

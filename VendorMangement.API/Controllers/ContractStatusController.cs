@@ -5,9 +5,7 @@ using VendorMnagement.DBclient.Models;
 
 namespace VendorMangement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ContractStatusController : Controller
+    public class ContractStatusController : ApiController
     {
         public readonly IContractStatusService _contractStatusService;
 

@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ErrorOr;
+using Microsoft.AspNetCore.Mvc;
 using VendorManagement.Contracts;
+using VendorMangement.API.ServiceErrors;
 using VendorMangement.API.Services;
 using VendorMnagement.DBclient.Models;
 
 namespace VendorMangement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class PartnerTypeController : ControllerBase
+    public class PartnerTypeController : ApiController
     {
         public readonly IPartnerTypeService _partnerTypeService;
 
@@ -19,54 +19,43 @@ namespace VendorMangement.API.Controllers
         [HttpPost]
         public IActionResult CreatePartnerType(PartnerTypeRequest partnerTypeRequest)
         {
-            var partnerType = new PartnerType();
-            partnerType.Description = partnerTypeRequest.Description;
-            partnerType.CreatedDate = DateTime.UtcNow;
-            partnerType.CreatedBy = "System";
-
-            _partnerTypeService.CreatePartnerType(partnerType);
-
-            PartnerTypeResponse partnerTypeResponse = new PartnerTypeResponse(
-                  partnerType.Guid,
-                  partnerType.Description,
-                  partnerType.CreatedBy,
-                  partnerType.CreatedDate,
-                  partnerType.LastModifiedBy,
-                  partnerType.LastModifiedDate
-                );
-
-            return CreatedAtAction(
-                actionName: nameof(GetPartnerType),
-                routeValues: new {id = partnerType.Guid },
-                value: partnerTypeResponse
+            ErrorOr<PartnerType> requestToPartnerTypeResult = PartnerType.Create(partnerTypeRequest.Description);
+            if(requestToPartnerTypeResult.IsError)
+            {
+                return Problem(requestToPartnerTypeResult.Errors);
+            }
+            var partnerType = requestToPartnerTypeResult.Value;
+            ErrorOr<Created> createPartnerTypeResult = _partnerTypeService.CreatePartnerType(partnerType);
+            return createPartnerTypeResult.Match(
+                  created => Ok(MapPartnerTypeResponse(partnerType)),
+                  errors => Problem(errors)
                 );
         }
 
         [HttpGet("{id:guid}")]
         public IActionResult GetPartnerType(Guid id)
         {
-            PartnerType partnerType = _partnerTypeService.GetPartnerType(id);
-            PartnerTypeResponse partnerTypeResponse = new PartnerTypeResponse(
-                 partnerType.Guid,
-                 partnerType.Description,
-                 partnerType.CreatedBy,
-                 partnerType.CreatedDate,
-                 partnerType.LastModifiedBy,
-                 partnerType.LastModifiedDate
-               );
-            return Ok(partnerTypeResponse);
+            ErrorOr<PartnerType> getPartnerTypeResult = _partnerTypeService.GetPartnerType(id);
+
+            return getPartnerTypeResult.Match(
+                  partnerType => Ok(MapPartnerTypeResponse(partnerType)),
+                  errors => Problem(errors)
+                );
+            
         }
 
         [HttpPut("{id:guid}")]
         public IActionResult UpdatePartnerType(Guid id, PartnerTypeRequest partnerTypeRequest)
         {
-            var partnerType = new PartnerType();
-            partnerType.Guid = id;
-            partnerType.Description = partnerTypeRequest.Description;
-            partnerType.LastModifiedDate = DateTime.UtcNow;
-            partnerType.LastModifiedBy = "System";
-
-            _partnerTypeService.UpdatePartnerType(id,partnerType);
+            ErrorOr<PartnerType> requestToPartnerTypeResult = PartnerType.From(id,partnerTypeRequest);
+            
+            if(requestToPartnerTypeResult.IsError)
+            {
+                return Problem(requestToPartnerTypeResult.Errors);
+            }
+            var partnerType = requestToPartnerTypeResult.Value;
+          
+            ErrorOr<Updated> updatePartnerTypeResult = _partnerTypeService.UpdatePartnerType(id,partnerType);
 
             PartnerTypeResponse partnerTypeResponse = new PartnerTypeResponse(
                  partnerType.Guid,
@@ -77,18 +66,37 @@ namespace VendorMangement.API.Controllers
                  partnerType.LastModifiedDate
                );
 
+            if (updatePartnerTypeResult.IsError)
+            {
+                return Problem(updatePartnerTypeResult.Errors);
+            }
+
             return CreatedAtAction(
-              actionName: nameof(GetPartnerType),
-              routeValues: new { id = partnerType.Guid },
-              value: partnerTypeResponse
-              );
+                actionName: nameof(GetPartnerType),
+                routeValues: new { id = partnerType.Guid },
+                value: partnerTypeResponse
+                );
+
         }
 
         [HttpDelete("{id:guid}")]
         public IActionResult DeletePartnerType(Guid id)
         {
-            _partnerTypeService.DeletePartnerType(id);
-            return NoContent();
+            ErrorOr<Deleted> deletePartnerTypeResult = _partnerTypeService.DeletePartnerType(id);
+            return deletePartnerTypeResult.Match(deleted => NoContent(),
+                errors => Problem(errors));
+        }
+
+        private static PartnerTypeResponse MapPartnerTypeResponse(PartnerType partnerType)
+        {
+            return new PartnerTypeResponse(
+                 partnerType.Guid,
+                 partnerType.Description,
+                 partnerType.CreatedBy,
+                 partnerType.CreatedDate,
+                 partnerType.LastModifiedBy,
+                 partnerType.LastModifiedDate
+               );
         }
     }
 }
