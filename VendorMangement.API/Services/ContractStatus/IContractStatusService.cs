@@ -1,14 +1,14 @@
-﻿using VendorMnagement.DBclient.Models;
+﻿using VendorManagement.DBclient.Models;
 
 namespace VendorMangement.API.Services
 {
     public interface IContractStatusService
     {
-        void CreateContractStatus(VendorMnagement.DBclient.Models.ContractStatus contractStatus);
+        void CreateContractStatus(ContractStatus contractStatus);
 
-        VendorMnagement.DBclient.Models.ContractStatus GetContractStatus(Guid id);
+       ContractStatus GetContractStatus(Guid id);
 
-        void UpdateContractStatus(Guid id, VendorMnagement.DBclient.Models.ContractStatus contractStatus);
+        void UpdateContractStatus(Guid id, ContractStatus contractStatus);
 
         void DeleteContractStatus(Guid id);
     }

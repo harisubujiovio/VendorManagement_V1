@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VendorManagement.Contracts;
+using VendorManagement.DBclient.Models;
 using VendorMangement.API.Services;
-using VendorMnagement.DBclient.Models;
 
 namespace VendorMangement.API.Controllers
 {

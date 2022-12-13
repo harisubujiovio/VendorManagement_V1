@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VendorMnagement.DBclient.Models;
+using VendorManagement.DBclient.Models;
 
 namespace VendorMnagement.DBclient.Data
 {
@@ -30,5 +30,7 @@ namespace VendorMnagement.DBclient.Data
         public DbSet<Sales> Sales { get; set; }
 
         public DbSet<Statement> Statements { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }

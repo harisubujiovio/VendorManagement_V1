@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VendorMnagement.DBclient.Data;
 
@@ -11,9 +12,11 @@ using VendorMnagement.DBclient.Data;
 namespace VendorManagement.DBclient.Migrations
 {
     [DbContext(typeof(VendorManagementDbContext))]
-    partial class VendorManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221213100317_User")]
+    partial class User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,45 @@ namespace VendorManagement.DBclient.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.CommissionMethod", b =>
+            modelBuilder.Entity("VendorManagement.DBclient.Models.User", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MobileNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("firstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("lastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Guid");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.CommissionMethod", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -48,7 +89,7 @@ namespace VendorManagement.DBclient.Migrations
                     b.ToTable("CommissionMethods");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.Contract", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.Contract", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -101,7 +142,7 @@ namespace VendorManagement.DBclient.Migrations
                     b.ToTable("Contracts");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.ContractStatus", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.ContractStatus", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -127,7 +168,7 @@ namespace VendorManagement.DBclient.Migrations
                     b.ToTable("ContractStatus");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.ContractType", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.ContractType", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -153,7 +194,7 @@ namespace VendorManagement.DBclient.Migrations
                     b.ToTable("ContractTypes");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.Partner", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.Partner", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -193,7 +234,7 @@ namespace VendorManagement.DBclient.Migrations
                     b.ToTable("Partners");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.PartnerType", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.PartnerType", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -219,7 +260,7 @@ namespace VendorManagement.DBclient.Migrations
                     b.ToTable("PartnerTypes");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.Sales", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.Sales", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -313,7 +354,7 @@ namespace VendorManagement.DBclient.Migrations
                     b.ToTable("Sales");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.Statement", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.Statement", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -361,62 +402,21 @@ namespace VendorManagement.DBclient.Migrations
                     b.ToTable("Statements");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.User", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.Contract", b =>
                 {
-                    b.Property<Guid>("Guid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("MobileNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("firstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Guid");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("VendorManagement.DBclient.Models.Contract", b =>
-                {
-                    b.HasOne("VendorManagement.DBclient.Models.CommissionMethod", "CommissionMethod")
+                    b.HasOne("VendorMnagement.DBclient.Models.CommissionMethod", "CommissionMethod")
                         .WithMany()
                         .HasForeignKey("CommissionMethodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VendorManagement.DBclient.Models.ContractStatus", "ContractStatus")
+                    b.HasOne("VendorMnagement.DBclient.Models.ContractStatus", "ContractStatus")
                         .WithMany()
                         .HasForeignKey("ContractStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VendorManagement.DBclient.Models.ContractType", "ContractType")
+                    b.HasOne("VendorMnagement.DBclient.Models.ContractType", "ContractType")
                         .WithMany()
                         .HasForeignKey("ContractTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -429,9 +429,9 @@ namespace VendorManagement.DBclient.Migrations
                     b.Navigation("ContractType");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.Partner", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.Partner", b =>
                 {
-                    b.HasOne("VendorManagement.DBclient.Models.PartnerType", "PartnerType")
+                    b.HasOne("VendorMnagement.DBclient.Models.PartnerType", "PartnerType")
                         .WithMany()
                         .HasForeignKey("PartnerTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -440,9 +440,9 @@ namespace VendorManagement.DBclient.Migrations
                     b.Navigation("PartnerType");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.Sales", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.Sales", b =>
                 {
-                    b.HasOne("VendorManagement.DBclient.Models.Partner", "Partner")
+                    b.HasOne("VendorMnagement.DBclient.Models.Partner", "Partner")
                         .WithMany()
                         .HasForeignKey("PartnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -451,15 +451,15 @@ namespace VendorManagement.DBclient.Migrations
                     b.Navigation("Partner");
                 });
 
-            modelBuilder.Entity("VendorManagement.DBclient.Models.Statement", b =>
+            modelBuilder.Entity("VendorMnagement.DBclient.Models.Statement", b =>
                 {
-                    b.HasOne("VendorManagement.DBclient.Models.Contract", "Contract")
+                    b.HasOne("VendorMnagement.DBclient.Models.Contract", "Contract")
                         .WithMany()
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VendorManagement.DBclient.Models.Partner", "Partner")
+                    b.HasOne("VendorMnagement.DBclient.Models.Partner", "Partner")
                         .WithMany()
                         .HasForeignKey("PartnerId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,9 +1,9 @@
 ﻿using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using VendorManagement.Contracts;
-using VendorMangement.API.ServiceErrors;
+using VendorManagement.DBclient.Models;
+using VendorManagement.Contracts.ServiceErrors;
 using VendorMangement.API.Services;
-using VendorMnagement.DBclient.Models;
 
 namespace VendorMangement.API.Controllers
 {

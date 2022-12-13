@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ErrorOr;
 using VendorManagement.Contracts;
-using VendorMangement.API.ServiceErrors;
+using VendorManagement.Contracts.ServiceErrors;
 
-namespace VendorMnagement.DBclient.Models
+namespace VendorManagement.DBclient.Models
 {
     public class PartnerType : BaseEntity
     {

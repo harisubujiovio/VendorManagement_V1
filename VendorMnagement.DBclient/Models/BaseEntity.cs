@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VendorMnagement.DBclient.Models
+namespace VendorManagement.DBclient.Models
 {
     public class BaseEntity
     {

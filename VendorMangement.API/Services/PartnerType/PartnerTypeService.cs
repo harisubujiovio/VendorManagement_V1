@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
-using VendorMangement.API.ServiceErrors;
+using VendorManagement.DBclient.Models;
+using VendorManagement.Contracts.ServiceErrors;
 using VendorMnagement.DBclient.Data;
-using VendorMnagement.DBclient.Models;
 namespace VendorMangement.API.Services
 {
     public class PartnerTypeService : IPartnerTypeService

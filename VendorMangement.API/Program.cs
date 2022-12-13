@@ -1,6 +1,11 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.EntityFrameworkCore;
 using VendorMangement.API.Services;
+using VendorMangement.API.Services.Authentication;
 using VendorMnagement.DBclient.Data;
+using IAuthenticationService = VendorMangement.API.Services.Authentication.IAuthenticationService;
+using AuthenticationService = VendorMangement.API.Services.Authentication.AuthenticationService;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -11,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
+    builder.Services.AddScoped<IAuthenticationService,AuthenticationService>();
+    builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
     builder.Services.AddScoped<IPartnerTypeService, PartnerTypeService>();
     builder.Services.AddScoped<IPartnerService, PartnerService>();
     builder.Services.AddScoped<ICommissionMethodService, CommissionMethodService>();

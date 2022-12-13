@@ -1,5 +1,5 @@
-﻿using VendorMnagement.DBclient.Data;
-using VendorMnagement.DBclient.Models;
+﻿using VendorManagement.DBclient.Models;
+using VendorMnagement.DBclient.Data;
 
 namespace VendorMangement.API.Services
 {

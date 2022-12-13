@@ -1,8 +1,8 @@
 ﻿using ErrorOr;
 
-namespace VendorMangement.API.ServiceErrors
+namespace VendorManagement.Contracts.ServiceErrors
 {
-    public static class Errors
+    public static partial class Errors
     {
         public static class PartnerType
         {
@@ -16,6 +16,38 @@ namespace VendorMangement.API.ServiceErrors
             public static Error NotFound => Error.NotFound(
               code: "PartnerType.NotFound",
               description: "Partner Type not found");
+        }
+        public static class Login
+        {
+            public static Error EmptyUserName => Error.Validation(
+                code: "User.EmptyUserName",
+                description: "User name is required");
+
+            public static Error EmptyPassword => Error.Validation(
+                code: "User.EmptyPassword",
+                description: "Password is required");
+
+            public static Error InvalidCredentials => Error.Validation(
+             code: "User.InvalidCredentials",
+             description: "Invalid Credentials");
+        }
+        public static class Register
+        {
+            public static Error EmptyFirstName => Error.Validation(
+                code: "User.EmptyFirstName",
+                description: "First name is required");
+
+            public static Error EmptyLastName => Error.Validation(
+               code: "User.EmptyLastName",
+               description: "Last name is required");
+
+            public static Error EmptyEmail => Error.Validation(
+               code: "User.EmptyEmail",
+               description: "Email is required");
+
+            public static Error EmptyMobileNumber => Error.Validation(
+              code: "User.EmptyMobileNumber",
+              description: "Mobile Number is required");
         }
     }
 }

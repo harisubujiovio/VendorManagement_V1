@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
-using VendorMnagement.DBclient.Models;
+using VendorManagement.DBclient.Models;
+
 namespace VendorMangement.API.Services
 {
     public interface IPartnerTypeService
