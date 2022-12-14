@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using VendorManagement.Contracts;
 using VendorManagement.DBclient.Models;
 using VendorMangement.API.Services;
-using static VendorManagement.Contracts.ServiceErrors.Errors;
 using CommissionMethod = VendorManagement.DBclient.Models.CommissionMethod;
 
 namespace VendorMangement.API.Controllers
@@ -11,7 +10,7 @@ namespace VendorMangement.API.Controllers
     public class CommissionMethodController : ApiController
     {
         public readonly ICommissionMethodService _commissionMethodeService;
-
+       
         public CommissionMethodController(ICommissionMethodService commissionMethodeService)
         {
             _commissionMethodeService = commissionMethodeService;
@@ -36,11 +35,20 @@ namespace VendorMangement.API.Controllers
         {
             ErrorOr<CommissionMethod> getCommissionMethodResult =  _commissionMethodeService.GetCommissionMethod(id);
             return getCommissionMethodResult.Match(
-                  partnerType => Ok(MapCommissionMethodResponse(partnerType)),
+                  commissionMethod => Ok(MapCommissionMethodResponse(commissionMethod)),
                   errors => Problem(errors)
                 );
 
            
+        }
+        [HttpGet()]
+        public IActionResult GetAllCommissionMethods()
+        {
+            ErrorOr<Dictionary<Guid, string>> getAllCommissionMethodResult = _commissionMethodeService.GetAllCommissionMethods();
+            return getAllCommissionMethodResult.Match(
+                  commissionMethod => Ok(commissionMethod),
+                  errors => Problem(errors)
+                );
         }
         [HttpPut("{id:guid}")]
         public IActionResult UpdateCommissionMethod(Guid id, CommissionMethodRequest commissionMethodRequest)

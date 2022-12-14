@@ -13,5 +13,7 @@ namespace VendorMangement.API.Services
         ErrorOr<Updated> UpdateCommissionMethod(Guid id, CommissionMethod commissionMethod);
 
         ErrorOr<Deleted> DeleteCommissionMethod(Guid id);
+
+        ErrorOr<Dictionary<Guid, string>> GetAllCommissionMethods();
     }
 }

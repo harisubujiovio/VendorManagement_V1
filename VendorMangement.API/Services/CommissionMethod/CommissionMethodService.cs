@@ -7,14 +7,17 @@ namespace VendorMangement.API.Services
 {
     public class CommissionMethodService : ICommissionMethodService
     {
+        public IConfiguration _configuration { get; }
         public readonly VendorManagementDbContext _vendorManagementDbContext;
 
-        public CommissionMethodService(VendorManagementDbContext vendorManagementDbContext)
+        public CommissionMethodService(VendorManagementDbContext vendorManagementDbContext, IConfiguration configuration)
         {
             _vendorManagementDbContext = vendorManagementDbContext;
+            _configuration = configuration;
         }
         public ErrorOr<Created> CreateCommissionMethod(CommissionMethod commissionMethod)
         {
+            string connectionString = _configuration["ConnectionStrings:VendorMgmtConnectionString"];
             _vendorManagementDbContext.CommissionMethods.Add(commissionMethod);
             _vendorManagementDbContext.SaveChanges();
             return Result.Created;
@@ -45,6 +48,11 @@ namespace VendorMangement.API.Services
             _vendorManagementDbContext.SaveChanges();
 
             return Result.Updated;
+        }
+
+        public ErrorOr<Dictionary<Guid, string>> GetAllCommissionMethods()
+        {
+            throw new NotImplementedException();
         }
     }
 }
