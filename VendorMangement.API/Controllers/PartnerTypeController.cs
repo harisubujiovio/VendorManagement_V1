@@ -19,7 +19,7 @@ namespace VendorMangement.API.Controllers
         [HttpPost]
         public IActionResult CreatePartnerType(PartnerTypeRequest partnerTypeRequest)
         {
-            ErrorOr<PartnerType> requestToPartnerTypeResult = PartnerType.Create(partnerTypeRequest.Description);
+            ErrorOr<PartnerType> requestToPartnerTypeResult = PartnerType.From(partnerTypeRequest);
             if(requestToPartnerTypeResult.IsError)
             {
                 return Problem(requestToPartnerTypeResult.Errors);

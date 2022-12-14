@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ErrorOr;
+using Microsoft.AspNetCore.Mvc;
 using VendorManagement.Contracts;
 using VendorManagement.DBclient.Models;
 using VendorMangement.API.Services;
+using static VendorManagement.Contracts.ServiceErrors.Errors;
+using CommissionMethod = VendorManagement.DBclient.Models.CommissionMethod;
 
 namespace VendorMangement.API.Controllers
 {
@@ -16,21 +19,54 @@ namespace VendorMangement.API.Controllers
         [HttpPost]
         public IActionResult CreateCommissionMethod(CommissionMethodRequest commissionMethodRequest)
         {
-            var commissionMethod = new CommissionMethod();
-            commissionMethod.Description = commissionMethodRequest.Description;
-            commissionMethod.CreatedDate = DateTime.UtcNow;
-            commissionMethod.CreatedBy = "System";
+            ErrorOr<CommissionMethod> requestToCommissionMethodResult = CommissionMethod.From(commissionMethodRequest);
+            if (requestToCommissionMethodResult.IsError)
+            {
+                return Problem(requestToCommissionMethodResult.Errors);
+            }
+            var commissionMethod = requestToCommissionMethodResult.Value;
+            ErrorOr<Created> createPartnerTypeResult = _commissionMethodeService.CreateCommissionMethod(commissionMethod);
+            return createPartnerTypeResult.Match(
+                  created => Ok(MapCommissionMethodResponse(commissionMethod)),
+                  errors => Problem(errors)
+                );
+        }
+        [HttpGet("{id:guid}")]
+        public IActionResult GetCommissionMethod(Guid id)
+        {
+            ErrorOr<CommissionMethod> getCommissionMethodResult =  _commissionMethodeService.GetCommissionMethod(id);
+            return getCommissionMethodResult.Match(
+                  partnerType => Ok(MapCommissionMethodResponse(partnerType)),
+                  errors => Problem(errors)
+                );
 
-            _commissionMethodeService.CreateCommissionMethod(commissionMethod);
+           
+        }
+        [HttpPut("{id:guid}")]
+        public IActionResult UpdateCommissionMethod(Guid id, CommissionMethodRequest commissionMethodRequest)
+        {
+            ErrorOr<CommissionMethod> requestToCommissionMethodResult = CommissionMethod.From(id, commissionMethodRequest);
+
+            if (requestToCommissionMethodResult.IsError)
+            {
+                return Problem(requestToCommissionMethodResult.Errors);
+            }
+            var commissionMethod = requestToCommissionMethodResult.Value;
+
+            ErrorOr<Updated> updateCommissionMethodResult = _commissionMethodeService.UpdateCommissionMethod(id, commissionMethod);
+            if (updateCommissionMethodResult.IsError)
+            {
+                return Problem(updateCommissionMethodResult.Errors);
+            }
 
             CommissionMethodResponse commissionMethodResponse = new CommissionMethodResponse(
-                  commissionMethod.Guid,
-                  commissionMethod.Description,
-                  commissionMethod.CreatedBy,
-                  commissionMethod.CreatedDate,
-                  commissionMethod.LastModifiedBy,
-                  commissionMethod.LastModifiedDate
-                );
+                commissionMethod.Guid,
+                commissionMethod.Description,
+                commissionMethod.CreatedBy,
+                commissionMethod.CreatedDate,
+                commissionMethod.LastModifiedBy,
+                commissionMethod.LastModifiedDate
+              );
 
             return CreatedAtAction(
                 actionName: nameof(GetCommissionMethod),
@@ -38,11 +74,17 @@ namespace VendorMangement.API.Controllers
                 value: commissionMethodResponse
                 );
         }
-        [HttpGet("{id:guid}")]
-        public IActionResult GetCommissionMethod(Guid id)
+        [HttpDelete("{id:guid}")]
+        public IActionResult DeleteCommissionMethod(Guid id)
         {
-            CommissionMethod commissionMethod = _commissionMethodeService.GetCommissionMethod(id);
-            CommissionMethodResponse commissionMethodResponse = new CommissionMethodResponse(
+            ErrorOr<Deleted> deleteCommissionMethodResult = _commissionMethodeService.DeleteCommissionMethod(id);
+            return deleteCommissionMethodResult.Match(deleted => NoContent(),
+                errors => Problem(errors));
+        }
+
+        private static CommissionMethodResponse MapCommissionMethodResponse(CommissionMethod commissionMethod)
+        {
+            return new CommissionMethodResponse(
                  commissionMethod.Guid,
                  commissionMethod.Description,
                  commissionMethod.CreatedBy,
@@ -50,39 +92,6 @@ namespace VendorMangement.API.Controllers
                  commissionMethod.LastModifiedBy,
                  commissionMethod.LastModifiedDate
                );
-            return Ok(commissionMethodResponse);
-        }
-        [HttpPut("{id:guid}")]
-        public IActionResult UpdateCommissionMethod(Guid id, CommissionMethodRequest commissionMethodRequest)
-        {
-            var commissionMethod = new CommissionMethod();
-            commissionMethod.Guid = id;
-            commissionMethod.Description = commissionMethodRequest.Description;
-            commissionMethod.LastModifiedDate = DateTime.UtcNow;
-            commissionMethod.LastModifiedBy = "System";
-
-            _commissionMethodeService.UpdateCommissionMethod(id, commissionMethod);
-
-            CommissionMethodResponse commissionMethodResponse = new CommissionMethodResponse(
-                     commissionMethod.Guid,
-                     commissionMethod.Description,
-                     commissionMethod.CreatedBy,
-                     commissionMethod.CreatedDate,
-                     commissionMethod.LastModifiedBy,
-                     commissionMethod.LastModifiedDate
-                   );
-
-            return CreatedAtAction(
-              actionName: nameof(GetCommissionMethod),
-              routeValues: new { id = commissionMethod.Guid },
-              value: commissionMethodResponse
-              );
-        }
-        [HttpDelete("{id:guid}")]
-        public IActionResult DeleteCommissionMethod(Guid id)
-        {
-            _commissionMethodeService.DeleteCommissionMethod(id);
-            return NoContent();
         }
 
     }

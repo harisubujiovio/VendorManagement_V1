@@ -1,13 +1,63 @@
-﻿using System;
+﻿using ErrorOr;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VendorManagement.Contracts;
+using VendorManagement.Contracts.ServiceErrors;
 namespace VendorManagement.DBclient.Models
 {
     public class CommissionMethod : BaseEntity
     {
+        public const int MinDescriptionLength = 3;
+
+        public const int MaxDescriptionLength = 150;
         public string Description { get; set; }
+
+        public static ErrorOr<CommissionMethod> From(CommissionMethodRequest commissionMethodRequest)
+        {
+            return Create(commissionMethodRequest.Description);
+        }
+        public static ErrorOr<CommissionMethod> From(Guid Id, CommissionMethodRequest commissionMethodRequest)
+        {
+            return Update(Id, commissionMethodRequest.Description);
+        }
+        private static ErrorOr<CommissionMethod> Create(string description)
+        {
+            List<Error> errors = Validate(description);
+
+            if (errors.Count > 0)
+                return errors;
+
+            CommissionMethod commissionMethod = new CommissionMethod();
+            commissionMethod.Description = description;
+            commissionMethod.CreatedDate = DateTime.UtcNow;
+            commissionMethod.CreatedBy = "System";
+            return commissionMethod;
+        }
+        private static ErrorOr<CommissionMethod> Update(Guid Id, string description)
+        {
+            List<Error> errors = Validate(description);
+
+            if (errors.Count > 0)
+                return errors;
+
+            CommissionMethod commissionMethod = new CommissionMethod();
+            commissionMethod.Description = description;
+            commissionMethod.LastModifiedDate = DateTime.UtcNow;
+            commissionMethod.LastModifiedBy = "System";
+            return commissionMethod;
+        }
+        private static List<Error> Validate(string description)
+        {
+            List<Error> errors = new();
+            if (description.Length is < MinDescriptionLength or > MaxDescriptionLength)
+            {
+                errors.Add(Errors.PartnerType.InvalidDescription);
+            }
+
+            return errors;
+        }
     }
 }

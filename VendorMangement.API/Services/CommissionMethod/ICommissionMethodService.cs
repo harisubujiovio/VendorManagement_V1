@@ -1,16 +1,17 @@
 ﻿
+using ErrorOr;
 using VendorManagement.DBclient.Models;
 
 namespace VendorMangement.API.Services
 {
     public interface ICommissionMethodService
     {
-        void CreateCommissionMethod(CommissionMethod commissionMethod);
+        ErrorOr<Created> CreateCommissionMethod(CommissionMethod commissionMethod);
 
-        CommissionMethod GetCommissionMethod(Guid id);
+        ErrorOr<CommissionMethod> GetCommissionMethod(Guid id);
 
-        void UpdateCommissionMethod(Guid id, CommissionMethod commissionMethod);
+        ErrorOr<Updated> UpdateCommissionMethod(Guid id, CommissionMethod commissionMethod);
 
-        void DeleteCommissionMethod(Guid id);
+        ErrorOr<Deleted> DeleteCommissionMethod(Guid id);
     }
 }

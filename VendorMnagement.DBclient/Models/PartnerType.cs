@@ -29,7 +29,7 @@ namespace VendorManagement.DBclient.Models
         {
             return Update(Id, partnerTypeRequest.Description);
         }
-        public static ErrorOr<PartnerType> Create(string description)
+        private static ErrorOr<PartnerType> Create(string description)
         {
             List<Error> errors = Validate(description);
 
@@ -42,7 +42,7 @@ namespace VendorManagement.DBclient.Models
             partnerType.CreatedBy = "System";
             return partnerType;
         }
-        public static ErrorOr<PartnerType> Update(Guid Id,string description)
+        private static ErrorOr<PartnerType> Update(Guid Id,string description)
         {
             List<Error> errors = Validate(description);
            

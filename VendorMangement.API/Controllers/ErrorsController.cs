@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace VendorMangement.API.Controllers
 {
@@ -6,6 +7,7 @@ namespace VendorMangement.API.Controllers
     {
         [Route("/error")]
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Error()
         {
             return Problem();

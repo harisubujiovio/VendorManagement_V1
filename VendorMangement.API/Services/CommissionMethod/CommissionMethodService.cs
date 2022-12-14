@@ -1,4 +1,6 @@
-﻿using VendorManagement.DBclient.Models;
+﻿using ErrorOr;
+using VendorManagement.Contracts.ServiceErrors;
+using VendorManagement.DBclient.Models;
 using VendorMnagement.DBclient.Data;
 
 namespace VendorMangement.API.Services
@@ -11,30 +13,38 @@ namespace VendorMangement.API.Services
         {
             _vendorManagementDbContext = vendorManagementDbContext;
         }
-        public void CreateCommissionMethod(CommissionMethod commissionMethod)
+        public ErrorOr<Created> CreateCommissionMethod(CommissionMethod commissionMethod)
         {
             _vendorManagementDbContext.CommissionMethods.Add(commissionMethod);
             _vendorManagementDbContext.SaveChanges();
+            return Result.Created;
         }
 
-        public void DeleteCommissionMethod(Guid id)
+        public ErrorOr<Deleted> DeleteCommissionMethod(Guid id)
         {
             var commissionMethod = _vendorManagementDbContext.CommissionMethods.Find(id);
             _vendorManagementDbContext.CommissionMethods.Remove(commissionMethod);
+            return Result.Deleted;
         }
 
-        public CommissionMethod GetCommissionMethod(Guid id)
+        public ErrorOr<CommissionMethod> GetCommissionMethod(Guid id)
         {
-            return _vendorManagementDbContext.CommissionMethods.Find(id);
+            var commissionMethod = _vendorManagementDbContext.CommissionMethods.Find(id);
+            if (commissionMethod != null)
+                return commissionMethod;
+
+            return Errors.CommissionMethod.NotFound;
         }
 
-        public void UpdateCommissionMethod(Guid id, CommissionMethod commissionMethod)
+        public ErrorOr<Updated> UpdateCommissionMethod(Guid id, CommissionMethod commissionMethod)
         {
             var dbcommissionMethod = _vendorManagementDbContext.CommissionMethods.Find(id);
             dbcommissionMethod.Description = commissionMethod.Description;
             dbcommissionMethod.LastModifiedBy = commissionMethod.LastModifiedBy;
             dbcommissionMethod.LastModifiedDate = commissionMethod.LastModifiedDate;
             _vendorManagementDbContext.SaveChanges();
+
+            return Result.Updated;
         }
     }
 }
