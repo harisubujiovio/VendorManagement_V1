@@ -6,6 +6,7 @@ using VendorMangement.API.Services.Authentication;
 using VendorMnagement.DBclient.Data;
 using IAuthenticationService = VendorMangement.API.Services.Authentication.IAuthenticationService;
 using AuthenticationService = VendorMangement.API.Services.Authentication.AuthenticationService;
+using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -16,9 +17,11 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
-    builder.Services.AddScoped<IAuthenticationService,AuthenticationService>();
-    builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+    //builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
+
+    //builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+    builder.Services.AddAuth(builder.Configuration);
+    builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<IPartnerTypeService, PartnerTypeService>();
     builder.Services.AddScoped<IPartnerService, PartnerService>();
     builder.Services.AddScoped<ICommissionMethodService, CommissionMethodService>();
@@ -42,7 +45,7 @@ var app = builder.Build();
     }
 
     app.UseHttpsRedirection();
-
+    app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapControllers();

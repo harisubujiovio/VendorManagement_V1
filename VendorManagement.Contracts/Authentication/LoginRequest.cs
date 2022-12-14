@@ -13,7 +13,7 @@ namespace VendorManagement.Contracts.Authentication
         public string Password { get; set; }
     }
 
-    public record LoginResponse : LoginRequest
+    public record LoginResponse 
     {
         public Guid UserId { get; set; }  
         
