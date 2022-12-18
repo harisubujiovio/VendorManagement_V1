@@ -17,7 +17,6 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
-    //builder.Services.AddSwaggerGen();
     builder.Services.AddSwaggerGen(c => {
         c.SwaggerDoc("v1", new OpenApiInfo
         {
@@ -45,9 +44,6 @@ var builder = WebApplication.CreateBuilder(args);
         }
     });
     });
-    //builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
-
-    //builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
     builder.Services.AddAuth(builder.Configuration);
     builder.Services.AddScoped<IVendorDbOperator,VendorDBOperator>();
     builder.Services.AddScoped<IQueryExecutor, QueryExecutor>();
