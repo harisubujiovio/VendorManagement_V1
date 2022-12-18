@@ -7,6 +7,7 @@ using VendorMnagement.DBclient.Data;
 using IAuthenticationService = VendorMangement.API.Services.Authentication.IAuthenticationService;
 using AuthenticationService = VendorMangement.API.Services.Authentication.AuthenticationService;
 using System.Runtime.CompilerServices;
+using VendorManagement.DBclient.DBProvider;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -21,6 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     //builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
     builder.Services.AddAuth(builder.Configuration);
+    builder.Services.AddScoped<IVendorDbOperator,VendorDBOperator>();
+    builder.Services.AddScoped<IQueryExecutor, QueryExecutor>();
     builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<IPartnerTypeService, PartnerTypeService>();
     builder.Services.AddScoped<IPartnerService, PartnerService>();

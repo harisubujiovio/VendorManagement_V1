@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using VendorManagement.Contracts;
 using VendorManagement.DBclient.Models;
 using VendorMangement.API.Services;
@@ -42,11 +43,22 @@ namespace VendorMangement.API.Controllers
            
         }
         [HttpGet()]
-        public IActionResult GetAllCommissionMethods()
+        [Route("GetDictionary")]
+        public IActionResult GetDictionary()
         {
-            ErrorOr<Dictionary<Guid, string>> getAllCommissionMethodResult = _commissionMethodeService.GetAllCommissionMethods();
-            return getAllCommissionMethodResult.Match(
+            ErrorOr<Dictionary<Guid, string>> getDictionaryResult = _commissionMethodeService.GetDictionary();
+            return getDictionaryResult.Match(
                   commissionMethod => Ok(commissionMethod),
+                  errors => Problem(errors)
+                );
+        }
+        [HttpGet()]
+        [Route("GetAllCommissionMethods")]
+        public IActionResult GetAllCommissionMethods(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        {
+            ErrorOr<IEnumerable<CommissionMethodResponse>> getAllCommissionMethodResult  = _commissionMethodeService.GetAllCommissionMethods(pageNo, pageSize, sortCol, sortType);
+            return getAllCommissionMethodResult.Match(
+                  commissionMethodResponses => Ok(commissionMethodResponses),
                   errors => Problem(errors)
                 );
         }
@@ -101,6 +113,13 @@ namespace VendorMangement.API.Controllers
                  commissionMethod.LastModifiedDate
                );
         }
+        //private static IEnumerable<CommissionMethodResponse> MapCommissionMethodResponse(IEnumerable<CommissionMethod> commissionMethods)
+        //{
+        //    foreach(CommissionMethod commissionMethod in commissionMethods)
+        //    {
+        //        yield return MapCommissionMethodResponse(commissionMethod);
+        //    } 
+        //}
 
     }
 }

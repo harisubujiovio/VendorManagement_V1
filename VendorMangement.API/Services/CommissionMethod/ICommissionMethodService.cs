@@ -1,5 +1,6 @@
 ﻿
 using ErrorOr;
+using VendorManagement.Contracts;
 using VendorManagement.DBclient.Models;
 
 namespace VendorMangement.API.Services
@@ -14,6 +15,8 @@ namespace VendorMangement.API.Services
 
         ErrorOr<Deleted> DeleteCommissionMethod(Guid id);
 
-        ErrorOr<Dictionary<Guid, string>> GetAllCommissionMethods();
+        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+
+        ErrorOr<IEnumerable<CommissionMethodResponse>> GetAllCommissionMethods(int pageNo, int pageSize,string sortCol = "", string sortType = "");
     }
 }

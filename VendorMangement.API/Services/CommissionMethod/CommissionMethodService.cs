@@ -1,23 +1,27 @@
 ﻿using ErrorOr;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using VendorManagement.Contracts;
 using VendorManagement.Contracts.ServiceErrors;
+using VendorManagement.DBclient.DBProvider;
 using VendorManagement.DBclient.Models;
 using VendorMnagement.DBclient.Data;
 
 namespace VendorMangement.API.Services
 {
-    public class CommissionMethodService : ICommissionMethodService
+    public class CommissionMethodService : Base, ICommissionMethodService
     {
-        public IConfiguration _configuration { get; }
         public readonly VendorManagementDbContext _vendorManagementDbContext;
-
-        public CommissionMethodService(VendorManagementDbContext vendorManagementDbContext, IConfiguration configuration)
+        public readonly IVendorDbOperator _vendorDbOperator;
+        public readonly IQueryExecutor _queryExecutor;
+        public CommissionMethodService(VendorManagementDbContext vendorManagementDbContext, IVendorDbOperator vendorDbOperator, IQueryExecutor queryExecutor)
         {
             _vendorManagementDbContext = vendorManagementDbContext;
-            _configuration = configuration;
+            _vendorDbOperator = vendorDbOperator;
+            _queryExecutor = queryExecutor;
         }
         public ErrorOr<Created> CreateCommissionMethod(CommissionMethod commissionMethod)
         {
-            string connectionString = _configuration["ConnectionStrings:VendorMgmtConnectionString"];
             _vendorManagementDbContext.CommissionMethods.Add(commissionMethod);
             _vendorManagementDbContext.SaveChanges();
             return Result.Created;
@@ -50,9 +54,40 @@ namespace VendorMangement.API.Services
             return Result.Updated;
         }
 
-        public ErrorOr<Dictionary<Guid, string>> GetAllCommissionMethods()
+        public ErrorOr<Dictionary<Guid, string>> GetDictionary()
         {
-            throw new NotImplementedException();
+            _vendorDbOperator.InitializeOperator("vm_sp_GetAllCommissionMethods", CommandType.StoredProcedure, null);
+            IDataReader dr = _queryExecutor.ExecuteReader();
+            Dictionary<Guid, string> keyValues = new Dictionary<Guid, string>();
+            while (dr.Read())
+            {
+                keyValues.Add(new Guid(dr["Guid"].ToString()), dr["Description"].ToString());
+            }
+            return keyValues;
         }
+
+        public ErrorOr<IEnumerable<CommissionMethodResponse>> GetAllCommissionMethods(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        {
+            var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
+            _vendorDbOperator.InitializeOperator("vm_sp_GetCommissionMethods", CommandType.StoredProcedure, parameters);
+            IDataReader dr = _queryExecutor.ExecuteReader();
+            List<CommissionMethodResponse> commissionMethodResponses = new();
+            while (dr.Read())
+            {
+                CommissionMethodResponse commissionMethodResponse = new CommissionMethodResponse(
+                          this.AgainstGUID(dr["Guid"]),
+                          this.AgainstString(dr["Description"]),
+                          this.AgainstString(dr["CreatedBy"]),
+                          this.AgainstDatetime(dr["CreatedDate"]),
+                          this.AgainstString(dr["lastModifiedBy"]),
+                          this.AgainstNullableDatetime(dr["lastModifiedDate"])
+                    );
+                commissionMethodResponses.Add(commissionMethodResponse);
+            }
+
+            return commissionMethodResponses;
+        }
+
+       
     }
 }

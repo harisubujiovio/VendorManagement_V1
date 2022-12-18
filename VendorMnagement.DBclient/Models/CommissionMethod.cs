@@ -15,6 +15,11 @@ namespace VendorManagement.DBclient.Models
         public const int MaxDescriptionLength = 150;
         public string Description { get; set; }
 
+        private CommissionMethod()
+        {
+
+        }
+
         public static ErrorOr<CommissionMethod> From(CommissionMethodRequest commissionMethodRequest)
         {
             return Create(commissionMethodRequest.Description);

@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using VendorManagement.Contracts;
 using VendorManagement.DBclient.Models;
 
 namespace VendorMangement.API.Services
@@ -12,7 +13,9 @@ namespace VendorMangement.API.Services
         ErrorOr<Updated> UpdatePartnerType(Guid id,PartnerType partnerTypeRequest);
 
         ErrorOr<Deleted> DeletePartnerType(Guid id);
+        ErrorOr<Dictionary<Guid, string>> GetDictionary();
 
+        ErrorOr<IEnumerable<PartnerTypeResponse>> GetAllPartnerTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "");
 
     }
 }
