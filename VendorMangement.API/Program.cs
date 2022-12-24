@@ -54,6 +54,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IContractTypeService, ContractTypeService>();
     builder.Services.AddScoped<IContractStatusService, ContractStatusService>();
     builder.Services.AddScoped<IRoleService, RoleService>();
+    builder.Services.AddScoped<ISalesSevice, SalesService>();
+    builder.Services.AddScoped<IContractService, ContractService>();
     builder.Services.AddDbContext<VendorManagementDbContext>(options =>
          options.UseSqlServer(builder.Configuration.GetConnectionString("VendorMgmtConnectionString")));
 }

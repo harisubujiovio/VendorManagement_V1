@@ -79,6 +79,34 @@ namespace VendorMangement.API.Services
 
             return Convert.ToInt64(obj);
         }
+        public decimal AgainstDecimal(object obj)
+        {
+
+            if (obj == DBNull.Value)
+                return -1;
+
+            if (null == obj)
+                return -1;
+
+            if (string.Empty == obj.ToString())
+                return -1;
+
+            return Convert.ToDecimal(obj);
+        }
+        public decimal? AgainstNullableDecimal(object obj)
+        {
+
+            if (obj == DBNull.Value)
+                return null;
+
+            if (null == obj)
+                return null;
+
+            if (string.Empty == obj.ToString())
+                return null;
+
+            return Convert.ToDecimal(obj);
+        }
         public double AgainstDouble(object obj)
         {
 

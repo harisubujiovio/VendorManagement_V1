@@ -177,5 +177,57 @@ namespace VendorManagement.Contracts.ServiceErrors
               code: "Role.NotFound",
               description: "Role not found");
         }
+        public static class Sales
+        {
+            public static Error InvalidEntryNo => Error.Validation(
+                code: "Sales.InvalidEntryNo",
+                description: $"Entry No should not be 0");
+
+            public static Error InvalidSource => Error.Validation(
+                code: "Sales.InvalidSource",
+                description: $"Source should not be empty");
+
+            public static Error InvalidDocumentType => Error.Validation(
+                code: "Sales.InvalidDocumentType",
+                description: $"Document Type should not be empty");
+
+            public static Error InvalidDocumentNo => Error.Validation(
+               code: "Sales.InvalidDocumentNo",
+               description: $"Document No should not be 0");
+
+            public static Error InvalidDocumentLineNo => Error.Validation(
+             code: "Sales.InvalidDocumentLineNo",
+             description: $"Document Line No should not be 0");
+
+            public static Error NotFound => Error.NotFound(
+              code: "Sales.NotFound",
+              description: "Sales not found");
+        }
+        public static class Contract
+        {
+            public static Error InvalidContractNo => Error.Validation(
+                code: "Contract.InvalidContractNo",
+                description: $"Contract no should not be empty");
+
+            public static Error InvalidContractTypeId => Error.Validation(
+                code: "Contract.InvalidContractTypeId",
+                description: $"Contract Type should not be empty");
+
+            public static Error InvalidCommissionMethodId => Error.Validation(
+                 code: "Contract.InvalidCommissionMethodId",
+                 description: $"Commission Method should not be empty");
+
+            public static Error InvalidContractStatusId => Error.Validation(
+                code: "Contract.InvalidContractStatusId",
+                description: $"Contract Status should not be empty");
+
+            public static Error InvalidPartnerId => Error.Validation(
+                code: "Contract.InvalidPartnerId",
+                description: $"Partner should not be empty");
+
+            public static Error NotFound => Error.NotFound(
+              code: "Contract.NotFound",
+              description: "Contract not found");
+        }
     }
 }
