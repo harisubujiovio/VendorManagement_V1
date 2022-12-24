@@ -229,5 +229,23 @@ namespace VendorManagement.Contracts.ServiceErrors
               code: "Contract.NotFound",
               description: "Contract not found");
         }
+        public static class Statement
+        {
+            public static Error InvalidStatementNo => Error.Validation(
+                code: "Statement.InvalidStatementNo",
+                description: $"Statement no should not be empty");
+
+            public static Error InvalidPartnerId => Error.Validation(
+                code: "Statement.InvalidPartnerId",
+                description: $"Partner should not be empty");
+
+            public static Error InvalidContractId => Error.Validation(
+               code: "Statement.InvalidContractId",
+               description: $"Contract should not be empty");
+
+            public static Error NotFound => Error.NotFound(
+              code: "Statement.NotFound",
+              description: "Statement not found");
+        }
     }
 }

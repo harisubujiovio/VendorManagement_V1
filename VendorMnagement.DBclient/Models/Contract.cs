@@ -98,6 +98,10 @@ namespace VendorManagement.DBclient.Models
             {
                 errors.Add(Errors.Contract.InvalidContractNo);
             }
+            if (string.IsNullOrEmpty(contractRequest.PartnerId))
+            {
+                errors.Add(Errors.Contract.InvalidPartnerId);
+            }
             if (string.IsNullOrEmpty(contractRequest.ContractStatusId))
             {
                 errors.Add(Errors.Contract.InvalidContractStatusId);
