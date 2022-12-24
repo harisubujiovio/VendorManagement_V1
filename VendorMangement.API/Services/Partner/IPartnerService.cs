@@ -1,17 +1,23 @@
 ﻿
 
+using ErrorOr;
+using VendorManagement.Contracts;
 using VendorManagement.DBclient.Models;
 
 namespace VendorMangement.API.Services
 {
     public interface IPartnerService
     {
-        void CreatePartner(Partner partner);
+        ErrorOr<Created> CreatePartner(Partner partner);
 
-        Partner GetPartner(Guid id);
+        ErrorOr<Partner> GetPartner(Guid id);
 
-        void UpdatePartner(Guid id, Partner partner);
+        ErrorOr<Updated> UpdatePartner(Guid id, Partner partner);
 
-        void DeletePartner(Guid id);
+        ErrorOr<Deleted> DeletePartner(Guid id);
+
+        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+
+        ErrorOr<IEnumerable<PartnerResponse>> GetAllPartners(int pageNo, int pageSize, string sortCol = "", string sortType = "");
     }
 }

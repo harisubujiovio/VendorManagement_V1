@@ -32,5 +32,7 @@ namespace VendorMnagement.DBclient.Data
         public DbSet<Statement> Statements { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
     }
 }

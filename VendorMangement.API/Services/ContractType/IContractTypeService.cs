@@ -1,4 +1,6 @@
-﻿using VendorManagement.DBclient.Models;
+﻿using ErrorOr;
+using VendorManagement.Contracts;
+using VendorManagement.DBclient.Models;
 
 namespace VendorMangement.API.Services
 {
@@ -8,8 +10,14 @@ namespace VendorMangement.API.Services
 
         ContractType GetContractType(Guid id);
 
+        ContractType GetContractTypeByCode(string code);
+
         void UpdateContractType(Guid id, ContractType contractType);
 
         void DeleteContractType(Guid id);
+
+        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+
+        ErrorOr<IEnumerable<ContractTypeResponse>> GetAllContractTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "");
     }
 }

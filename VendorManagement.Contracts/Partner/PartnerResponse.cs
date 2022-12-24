@@ -9,7 +9,7 @@ namespace VendorManagement.Contracts
 {
     public record PartnerResponse : AuditTrialResponse
     {
-        public long PartnerNo { get; set; }
+        public string PartnerNo { get; set; }
 
         public string PartnerName { get; set; }
 
@@ -19,7 +19,7 @@ namespace VendorManagement.Contracts
 
         public Guid PartnerTypeId { get; set; }
 
-        public PartnerResponse(Guid Id, long partnerNo, string partnerName, string email,string mobileNumber, Guid partnerTypeId,
+        public PartnerResponse(Guid Id, string partnerNo, string partnerName, string email,string mobileNumber, Guid partnerTypeId,
             string createdBy, DateTime createdDate, string lastModifiedBy, DateTime? lastModifiedDate)
         {
             this.Id = Id;

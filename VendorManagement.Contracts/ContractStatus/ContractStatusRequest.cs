@@ -8,6 +8,7 @@ namespace VendorManagement.Contracts
 {
     public class ContractStatusRequest
     {
+        public string Code { get; set; }
         public string Description { get; set; }
     }
 }

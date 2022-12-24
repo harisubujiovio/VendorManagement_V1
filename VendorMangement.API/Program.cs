@@ -53,7 +53,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ICommissionMethodService, CommissionMethodService>();
     builder.Services.AddScoped<IContractTypeService, ContractTypeService>();
     builder.Services.AddScoped<IContractStatusService, ContractStatusService>();
-
+    builder.Services.AddScoped<IRoleService, RoleService>();
     builder.Services.AddDbContext<VendorManagementDbContext>(options =>
          options.UseSqlServer(builder.Configuration.GetConnectionString("VendorMgmtConnectionString")));
 }

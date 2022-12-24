@@ -36,6 +36,8 @@ namespace VendorManagement.Contracts.Authentication
         public string mobileNumber { get; set; }
 
         public string address { get; set; }
+
+        public string roleid { get; set; }
     }
 
 }

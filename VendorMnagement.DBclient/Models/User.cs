@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using VendorManagement.DBclient.Migrations;
 
 namespace VendorManagement.DBclient.Models
 {
+    [Index(nameof(email), IsUnique = true)]
     public class User : BaseEntity
     {
         public string firstName { get; set; }
@@ -25,6 +27,11 @@ namespace VendorManagement.DBclient.Models
         public string MobileNumber { get; set; }
 
         public string Address { get; set; }
+
+        public List<Partner> Partners { get; set; }
+
+        public List<Role> Roles { get; set; }
+
 
         public static ErrorOr<LoginRequest> From(LoginRequest loginRequest)
         {
@@ -76,15 +83,19 @@ namespace VendorManagement.DBclient.Models
             }
             if (string.IsNullOrEmpty(registerRequest.lastName))
             {
-                errors.Add(Errors.Register.EmptyLastName);
+                errors.Add(Errors.Register.InvalidLastName);
             }
             if (string.IsNullOrEmpty(registerRequest.email))
             {
-                errors.Add(Errors.Register.EmptyEmail);
+                errors.Add(Errors.Register.InvalidEmail);
             }
             if (string.IsNullOrEmpty(registerRequest.mobileNumber))
             {
-                errors.Add(Errors.Register.EmptyMobileNumber);
+                errors.Add(Errors.Register.InvalidMobileNumber);
+            }
+            if (string.IsNullOrEmpty(registerRequest.roleid))
+            {
+                errors.Add(Errors.Register.InvalidRole);
             }
             return errors;
         }

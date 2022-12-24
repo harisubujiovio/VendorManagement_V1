@@ -10,5 +10,7 @@ namespace VendorMangement.API.Services.Authentication
         ErrorOr<Created> Register(User user);
 
         ErrorOr<LoginResponse> Login(LoginRequest loginRequest);
+
+        ErrorOr<bool> AssignUserRole(Guid userid, Guid roleid);
     }
 }

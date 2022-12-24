@@ -60,6 +60,7 @@ namespace VendorMangement.API.Controllers
             RegisterResponse response = new RegisterResponse();
             if (!createUserResult.IsError)
             {
+                _authenticationService.AssignUserRole(user.Guid, new Guid(registerRequest.roleid));
                 response.UserId = user.Guid;
                 response.firstName = user.firstName; 
                 response.lastName = user.lastName;

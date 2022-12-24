@@ -7,15 +7,15 @@ using VendorManagement.Contracts.Base;
 
 namespace VendorManagement.Contracts
 {
-    public record ContractStatusResponse : AuditTrialResponse
+    public record RoleResponse : AuditTrialResponse
     {
-        public string Code { get; }
+        public string Name { get; set; }    
         public string Description { get; }
 
-        public ContractStatusResponse(Guid Id,string code, string description, string createdBy, DateTime createdDate, string lastModifiedBy, DateTime? lastModifiedDate)
+        public RoleResponse(Guid Id,string name, string description, string createdBy, DateTime createdDate, string lastModifiedBy, DateTime? lastModifiedDate)
         {
             this.Id = Id;
-            this.Code = code;
+            this.Name = name;
             this.Description = description;
             this.CreatedBy = createdBy;
             this.CreatedDate = createdDate;

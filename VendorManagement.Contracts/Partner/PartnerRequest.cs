@@ -8,7 +8,7 @@ namespace VendorManagement.Contracts
 {
     public record PartnerRequest
     {
-        public long PartnerNo { get; set; }
+        public string PartnerNo { get; set; }
 
         public string PartnerName { get; set; }
 

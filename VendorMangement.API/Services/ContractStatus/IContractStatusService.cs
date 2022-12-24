@@ -1,15 +1,21 @@
-﻿using VendorManagement.DBclient.Models;
+﻿using ErrorOr;
+using VendorManagement.Contracts;
+using VendorManagement.DBclient.Models;
 
 namespace VendorMangement.API.Services
 {
     public interface IContractStatusService
     {
-        void CreateContractStatus(ContractStatus contractStatus);
+        ErrorOr<Created> CreateContractStatus(ContractStatus contractStatus);
 
-       ContractStatus GetContractStatus(Guid id);
+        ErrorOr<ContractStatus> GetContractStatus(Guid id);
 
-        void UpdateContractStatus(Guid id, ContractStatus contractStatus);
+        ErrorOr<Updated> UpdateContractStatus(Guid id, ContractStatus contractStatus);
 
-        void DeleteContractStatus(Guid id);
+        ErrorOr<Deleted> DeleteContractStatus(Guid id);
+
+        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+
+        ErrorOr<IEnumerable<ContractStatusResponse>> GetAllContractStatus(int pageNo, int pageSize, string sortCol = "", string sortType = "");
     }
 }

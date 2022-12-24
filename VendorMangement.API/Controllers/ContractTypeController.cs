@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ErrorOr;
+using Microsoft.AspNetCore.Mvc;
 using VendorManagement.Contracts;
 using VendorManagement.DBclient.Models;
 using VendorMangement.API.Services;
@@ -25,6 +26,7 @@ namespace VendorMangement.API.Controllers
 
             ContractTypeResponse contractTypeResponse = new ContractTypeResponse(
                   contractType.Guid,
+                  contractType.Code,
                   contractType.Description,
                   contractType.CreatedBy,
                   contractType.CreatedDate,
@@ -44,6 +46,7 @@ namespace VendorMangement.API.Controllers
             ContractType contractType = _contractTypeService.GetContractType(id);
             ContractTypeResponse contractTypeResponse = new ContractTypeResponse(
                  contractType.Guid,
+                  contractType.Code,
                  contractType.Description,
                  contractType.CreatedBy,
                  contractType.CreatedDate,
@@ -51,6 +54,26 @@ namespace VendorMangement.API.Controllers
                  contractType.LastModifiedDate
                );
             return Ok(contractTypeResponse);
+        }
+        [HttpGet()]
+        [Route("GetDictionary")]
+        public IActionResult GetDictionary()
+        {
+            ErrorOr<Dictionary<Guid, string>> getDictionaryResult = _contractTypeService.GetDictionary();
+            return getDictionaryResult.Match(
+                  contractType => Ok(contractType),
+                  errors => Problem(errors)
+                );
+        }
+        [HttpGet()]
+        [Route("GetAllContractTypes")]
+        public IActionResult GetAllContractTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        {
+            ErrorOr<IEnumerable<ContractTypeResponse>> getAllContractTypeMethodResult = _contractTypeService.GetAllContractTypes(pageNo, pageSize, sortCol, sortType);
+            return getAllContractTypeMethodResult.Match(
+                  contractStatusResponses => Ok(contractStatusResponses),
+                  errors => Problem(errors)
+                );
         }
         [HttpPut("{id:guid}")]
         public IActionResult UpdateContractType(Guid id, ContractTypeRequest contractTypeRequest)
@@ -65,6 +88,7 @@ namespace VendorMangement.API.Controllers
 
             ContractTypeResponse contractTypeResponse = new ContractTypeResponse(
                      contractType.Guid,
+                     contractType.Code,
                      contractType.Description,
                      contractType.CreatedBy,
                      contractType.CreatedDate,

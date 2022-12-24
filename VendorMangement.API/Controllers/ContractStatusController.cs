@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ErrorOr;
+using Microsoft.AspNetCore.Mvc;
 using VendorManagement.Contracts;
 using VendorManagement.DBclient.Models;
 using VendorMangement.API.Services;
+using static VendorManagement.Contracts.ServiceErrors.Errors;
+using ContractStatus = VendorManagement.DBclient.Models.ContractStatus;
 
 namespace VendorMangement.API.Controllers
 {
@@ -16,21 +19,74 @@ namespace VendorMangement.API.Controllers
         [HttpPost]
         public IActionResult CreateContractStatusService(ContractStatusRequest contractStatusRequest)
         {
-            var contractStatus = new ContractStatus();
-            contractStatus.Description = contractStatusRequest.Description;
-            contractStatus.CreatedDate = DateTime.UtcNow;
-            contractStatus.CreatedBy = "System";
-
-            _contractStatusService.CreateContractStatus(contractStatus);
-
-            ContractStatusResponse contractStatusResponse = new ContractStatusResponse(
-                  contractStatus.Guid,
-                  contractStatus.Description,
-                  contractStatus.CreatedBy,
-                  contractStatus.CreatedDate,
-                  contractStatus.LastModifiedBy,
-                  contractStatus.LastModifiedDate
+            ErrorOr<ContractStatus> requestToContractStatusResult = ContractStatus.From(contractStatusRequest);
+            if (requestToContractStatusResult.IsError)
+            {
+                return Problem(requestToContractStatusResult.Errors);
+            }
+            var contractStatus = requestToContractStatusResult.Value;
+           
+            ErrorOr<Created> createPartnerTypeResult = _contractStatusService.CreateContractStatus(contractStatus);
+            return createPartnerTypeResult.Match(
+                  created => Ok(MapContractStatusResponse(contractStatus)),
+                  errors => Problem(errors)
                 );
+        }
+        [HttpGet("{id:guid}")]
+        public IActionResult GetContractStatus(Guid id)
+        {
+            ErrorOr<ContractStatus> getContractStatusResult = _contractStatusService.GetContractStatus(id);
+            return getContractStatusResult.Match(
+                  contractStatus => Ok(MapContractStatusResponse(contractStatus)),
+                  errors => Problem(errors)
+                );
+
+        }
+        [HttpGet()]
+        [Route("GetDictionary")]
+        public IActionResult GetDictionary()
+        {
+            ErrorOr<Dictionary<Guid, string>> getDictionaryResult = _contractStatusService.GetDictionary();
+            return getDictionaryResult.Match(
+                  contractStatus => Ok(contractStatus),
+                  errors => Problem(errors)
+                );
+        }
+        [HttpGet()]
+        [Route("GetAllContractStatus")]
+        public IActionResult GetAllContractStatus(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        {
+            ErrorOr<IEnumerable<ContractStatusResponse>> getAllContractStatusMethodResult = _contractStatusService.GetAllContractStatus(pageNo, pageSize, sortCol, sortType);
+            return getAllContractStatusMethodResult.Match(
+                  contractStatusResponses => Ok(contractStatusResponses),
+                  errors => Problem(errors)
+                );
+        }
+        [HttpPut("{id:guid}")]
+        public IActionResult UpdateContractStatus(Guid id, ContractStatusRequest contractStatusRequest)
+        {
+            ErrorOr<ContractStatus> requestToContractStatusResult = ContractStatus.From(id, contractStatusRequest);
+
+            if (requestToContractStatusResult.IsError)
+            {
+                return Problem(requestToContractStatusResult.Errors);
+            }
+            var contractStatus = requestToContractStatusResult.Value;
+            ErrorOr<Updated> updateContractStatusResult = _contractStatusService.UpdateContractStatus(id, contractStatus);
+            ContractStatusResponse contractStatusResponse = new ContractStatusResponse(
+                             contractStatus.Guid,
+                             contractStatus.Code,
+                             contractStatus.Description,
+                             contractStatus.CreatedBy,
+                             contractStatus.CreatedDate,
+                             contractStatus.LastModifiedBy,
+                             contractStatus.LastModifiedDate
+                           );
+
+            if (updateContractStatusResult.IsError)
+            {
+                return Problem(updateContractStatusResult.Errors);
+            }
 
             return CreatedAtAction(
                 actionName: nameof(GetContractStatus),
@@ -38,51 +94,23 @@ namespace VendorMangement.API.Controllers
                 value: contractStatusResponse
                 );
         }
-        [HttpGet("{id:guid}")]
-        public IActionResult GetContractStatus(Guid id)
+        [HttpDelete("{id:guid}")]
+        public IActionResult DeleteContractStatus(Guid id)
         {
-            ContractStatus contractStatus = _contractStatusService.GetContractStatus(id);
-            ContractStatusResponse contractTypeResponse = new ContractStatusResponse(
+            _contractStatusService.DeleteContractStatus(id);
+            return NoContent();
+        }
+        private static ContractStatusResponse MapContractStatusResponse(ContractStatus contractStatus)
+        {
+            return new ContractStatusResponse(
                  contractStatus.Guid,
+                 contractStatus.Code,
                  contractStatus.Description,
                  contractStatus.CreatedBy,
                  contractStatus.CreatedDate,
                  contractStatus.LastModifiedBy,
                  contractStatus.LastModifiedDate
                );
-            return Ok(contractTypeResponse);
-        }
-        [HttpPut("{id:guid}")]
-        public IActionResult UpdateContractStatus(Guid id, ContractStatusRequest contractStatusRequest)
-        {
-            var contractStatus = new ContractStatus();
-            contractStatus.Guid = id;
-            contractStatus.Description = contractStatusRequest.Description;
-            contractStatus.LastModifiedDate = DateTime.UtcNow;
-            contractStatus.LastModifiedBy = "System";
-
-            _contractStatusService.UpdateContractStatus(id, contractStatus);
-
-            ContractStatusResponse contractStatusResponse = new ContractStatusResponse(
-                     contractStatus.Guid,
-                     contractStatus.Description,
-                     contractStatus.CreatedBy,
-                     contractStatus.CreatedDate,
-                     contractStatus.LastModifiedBy,
-                     contractStatus.LastModifiedDate
-                   );
-
-            return CreatedAtAction(
-              actionName: nameof(GetContractStatus),
-              routeValues: new { id = contractStatus.Guid },
-              value: contractStatusResponse
-              );
-        }
-        [HttpDelete("{id:guid}")]
-        public IActionResult DeleteContractStatus(Guid id)
-        {
-            _contractStatusService.DeleteContractStatus(id);
-            return NoContent();
         }
     }
 }

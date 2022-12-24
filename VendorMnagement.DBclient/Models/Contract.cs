@@ -25,6 +25,8 @@ namespace VendorManagement.DBclient.Models
 
         public Guid ContractStatusId { get; set; }
 
+        public Guid PartnerId { get; set; } 
+
         [ForeignKey("ContractTypeId")]
         public ContractType ContractType { get; set; }
 
@@ -33,5 +35,10 @@ namespace VendorManagement.DBclient.Models
 
         [ForeignKey("ContractStatusId")]
         public ContractStatus ContractStatus { get; set; }
+
+        //[ForeignKey("PartnerId")]
+        //public Partner Partner { get; set; }
+
+
     }
 }

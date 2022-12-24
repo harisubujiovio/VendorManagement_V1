@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VendorMnagement.DBclient.Data;
 
@@ -11,9 +12,11 @@ using VendorMnagement.DBclient.Data;
 namespace VendorManagement.DBclient.Migrations
 {
     [DbContext(typeof(VendorManagementDbContext))]
-    partial class VendorManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221223011545_Code")]
+    partial class Code
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +38,6 @@ namespace VendorManagement.DBclient.Migrations
                     b.HasIndex("UsersGuid");
 
                     b.ToTable("PartnerUser");
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<Guid>("RolesGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsersGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("RolesGuid", "UsersGuid");
-
-                    b.HasIndex("UsersGuid");
-
-                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("VendorManagement.DBclient.Models.CommissionMethod", b =>
@@ -505,21 +493,6 @@ namespace VendorManagement.DBclient.Migrations
                     b.HasOne("VendorManagement.DBclient.Models.Partner", null)
                         .WithMany()
                         .HasForeignKey("PartnersGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VendorManagement.DBclient.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("VendorManagement.DBclient.Models.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -5,16 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 using VendorManagement.Contracts;
 using VendorManagement.Contracts.ServiceErrors;
 
 namespace VendorManagement.DBclient.Models
 {
+    [Index(nameof(Code), IsUnique = true)]
     public class PartnerType : BaseEntity
     {
         public const int MinDescriptionLength = 3;
 
         public const int MaxDescriptionLength = 150;
+
+        public string Code { get; set; }
         public string Description { get; set; }
 
         private PartnerType()

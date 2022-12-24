@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VendorMnagement.DBclient.Data;
 
@@ -11,9 +12,11 @@ using VendorMnagement.DBclient.Data;
 namespace VendorManagement.DBclient.Migrations
 {
     [DbContext(typeof(VendorManagementDbContext))]
-    partial class VendorManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221219155958_Role")]
+    partial class Role
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +38,6 @@ namespace VendorManagement.DBclient.Migrations
                     b.HasIndex("UsersGuid");
 
                     b.ToTable("PartnerUser");
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<Guid>("RolesGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsersGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("RolesGuid", "UsersGuid");
-
-                    b.HasIndex("UsersGuid");
-
-                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("VendorManagement.DBclient.Models.CommissionMethod", b =>
@@ -138,6 +126,8 @@ namespace VendorManagement.DBclient.Migrations
 
                     b.HasIndex("ContractTypeId");
 
+                    b.HasIndex("PartnerId");
+
                     b.ToTable("Contracts");
                 });
 
@@ -146,9 +136,6 @@ namespace VendorManagement.DBclient.Migrations
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -166,10 +153,6 @@ namespace VendorManagement.DBclient.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Guid");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasFilter("[Code] IS NOT NULL");
 
                     b.ToTable("ContractStatus");
                 });
@@ -253,9 +236,6 @@ namespace VendorManagement.DBclient.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -272,10 +252,6 @@ namespace VendorManagement.DBclient.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Guid");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasFilter("[Code] IS NOT NULL");
 
                     b.ToTable("PartnerTypes");
                 });
@@ -515,21 +491,6 @@ namespace VendorManagement.DBclient.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("VendorManagement.DBclient.Models.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VendorManagement.DBclient.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("VendorManagement.DBclient.Models.Contract", b =>
                 {
                     b.HasOne("VendorManagement.DBclient.Models.CommissionMethod", "CommissionMethod")
@@ -550,11 +511,19 @@ namespace VendorManagement.DBclient.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("VendorManagement.DBclient.Models.Partner", "Partner")
+                        .WithMany()
+                        .HasForeignKey("PartnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("CommissionMethod");
 
                     b.Navigation("ContractStatus");
 
                     b.Navigation("ContractType");
+
+                    b.Navigation("Partner");
                 });
 
             modelBuilder.Entity("VendorManagement.DBclient.Models.Partner", b =>
