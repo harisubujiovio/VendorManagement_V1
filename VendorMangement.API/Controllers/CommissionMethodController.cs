@@ -81,6 +81,7 @@ namespace VendorMangement.API.Controllers
 
             CommissionMethodResponse commissionMethodResponse = new CommissionMethodResponse(
                 commissionMethod.Guid,
+                commissionMethod.Code,
                 commissionMethod.Description,
                 commissionMethod.CreatedBy,
                 commissionMethod.CreatedDate,
@@ -106,6 +107,7 @@ namespace VendorMangement.API.Controllers
         {
             return new CommissionMethodResponse(
                  commissionMethod.Guid,
+                 commissionMethod.Code,
                  commissionMethod.Description,
                  commissionMethod.CreatedBy,
                  commissionMethod.CreatedDate,

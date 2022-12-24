@@ -76,6 +76,7 @@ namespace VendorMangement.API.Services
             {
                 CommissionMethodResponse commissionMethodResponse = new CommissionMethodResponse(
                           this.AgainstGUID(dr["Guid"]),
+                          this.AgainstString(dr["Code"]),
                           this.AgainstString(dr["Description"]),
                           this.AgainstString(dr["CreatedBy"]),
                           this.AgainstDatetime(dr["CreatedDate"]),

@@ -76,6 +76,7 @@ namespace VendorMangement.API.Services
                 PartnerTypeResponse partnerTypeResponse = 
                     new PartnerTypeResponse(
                           this.AgainstGUID(dr["Guid"]),
+                          this.AgainstString(dr["Code"]),
                           this.AgainstString(dr["Description"]),
                           this.AgainstString(dr["CreatedBy"]),
                           this.AgainstDatetime(dr["CreatedDate"]),

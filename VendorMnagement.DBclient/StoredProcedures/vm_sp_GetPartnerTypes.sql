@@ -18,7 +18,7 @@ BEGIN
   Declare @PageNumber As INT, @RowsPerPage AS INT
   SET @PageNumber = @PageNo
   SET @RowsPerPage = @PageSize
-   select GUID,Description,CreatedBy,CreatedDate,lastModifiedBy,lastModifiedDate, COUNT(*) OVER() as TotalCount from PartnerTypes
+   select *, COUNT(*) OVER() as TotalCount from PartnerTypes
    ORDER BY 
    CASE WHEN @SortingCol = 'CreatedDate' AND @SortType = 'ASC' THEN CreatedDate END,
    CASE WHEN @SortingCol = 'CreatedDate' AND @SortType = 'DESC' THEN CreatedDate END DESC

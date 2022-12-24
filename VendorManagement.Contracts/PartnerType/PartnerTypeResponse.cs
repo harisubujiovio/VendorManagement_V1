@@ -9,11 +9,13 @@ namespace VendorManagement.Contracts
 {
     public record PartnerTypeResponse : AuditTrialResponse
     {
+        public string Code { get; set; }
         public string Description { get; }
 
-        public PartnerTypeResponse(Guid Id, string description,string createdBy, DateTime createdDate, string lastModifiedBy, DateTime? lastModifiedDate)
+        public PartnerTypeResponse(Guid Id,string code, string description,string createdBy, DateTime createdDate, string lastModifiedBy, DateTime? lastModifiedDate)
         {
             this.Id = Id;
+            this.Code = code;
             this.Description = description;
             this.CreatedBy = createdBy;
             this.CreatedDate = createdDate;

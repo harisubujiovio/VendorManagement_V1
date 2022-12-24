@@ -78,6 +78,7 @@ namespace VendorMangement.API.Controllers
 
             PartnerTypeResponse partnerTypeResponse = new PartnerTypeResponse(
                  partnerType.Guid,
+                 partnerType.Code,
                  partnerType.Description,
                  partnerType.CreatedBy,
                  partnerType.CreatedDate,
@@ -110,6 +111,7 @@ namespace VendorMangement.API.Controllers
         {
             return new PartnerTypeResponse(
                  partnerType.Guid,
+                 partnerType.Code,
                  partnerType.Description,
                  partnerType.CreatedBy,
                  partnerType.CreatedDate,
