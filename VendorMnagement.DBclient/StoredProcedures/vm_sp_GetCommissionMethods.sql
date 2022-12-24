@@ -1,7 +1,7 @@
-/****** Object:  StoredProcedure [dbo].[vm_sp_GetCommissionMethods]    Script Date: 18-12-2022 11:22:36 ******/
+/****** Object:  StoredProcedure [dbo].[vm_sp_GetCommissionMethods]    Script Date: 24-12-2022 20:53:29 ******/
 DROP PROCEDURE IF EXISTS [dbo].[vm_sp_GetCommissionMethods]
 GO
-/****** Object:  StoredProcedure [dbo].[vm_sp_GetCommissionMethods]    Script Date: 18-12-2022 11:22:36 ******/
+/****** Object:  StoredProcedure [dbo].[vm_sp_GetCommissionMethods]    Script Date: 24-12-2022 20:53:29 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
