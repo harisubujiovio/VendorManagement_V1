@@ -148,6 +148,13 @@ namespace VendorMangement.API.Services
         {
             return new Guid(obj.ToString());
         }
+        public Guid AgainstNullableGUID(object obj)
+        {
+            if (obj == DBNull.Value)
+                return Guid.Empty;
+
+            return new Guid(obj.ToString());
+        }
         public string AgainstString(object obj, bool fromExport)
         {
             if (obj == DBNull.Value)

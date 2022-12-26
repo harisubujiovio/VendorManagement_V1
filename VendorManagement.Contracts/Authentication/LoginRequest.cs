@@ -12,15 +12,26 @@ namespace VendorManagement.Contracts.Authentication
 
         public string Password { get; set; }
     }
-
-    public record LoginResponse 
+    public record LoginResponse
     {
-        public Guid UserId { get; set; }  
-        
-        public string firstName { get; set; }
+        public string token { get; set; }   
+    }
+    public record UserDetail 
+    {
+        public Guid userid { get; set; }
 
-        public string lastName { get; set; }
+        public string displayName { get; set; }
 
-        public string token { get; set; }
+        public Guid partnerid { get; set; }
+
+        public Guid roleid { get; set; }    
+
+        public UserDetail(Guid guid, string displayName,Guid partnerid, Guid roleid)
+        {
+            this.userid = guid;
+            this.displayName= displayName;
+            this.partnerid = partnerid;
+            this.roleid = roleid;
+        }
     }
 }

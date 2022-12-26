@@ -66,12 +66,13 @@ namespace VendorMangement.API.Services
             return keyValues;
         }
 
-        public ErrorOr<IEnumerable<CommissionMethodResponse>> GetAllCommissionMethods(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<CommissionMethodResponseRoot> GetAllCommissionMethods(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
+            CommissionMethodResponseRoot commissionMethod = new CommissionMethodResponseRoot();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
             _vendorDbOperator.InitializeOperator("vm_sp_GetCommissionMethods", CommandType.StoredProcedure, parameters);
             IDataReader dr = _queryExecutor.ExecuteReader();
-            List<CommissionMethodResponse> commissionMethodResponses = new();
+            List<CommissionMethodResponse> commissionMethods = new();
             while (dr.Read())
             {
                 CommissionMethodResponse commissionMethodResponse = new CommissionMethodResponse(
@@ -83,10 +84,11 @@ namespace VendorMangement.API.Services
                           this.AgainstString(dr["lastModifiedBy"]),
                           this.AgainstNullableDatetime(dr["lastModifiedDate"])
                     );
-                commissionMethodResponses.Add(commissionMethodResponse);
+                commissionMethods.Add(commissionMethodResponse);
+                commissionMethod.totalRows = this.AgainstInt(dr["TotalCount"]);
             }
-
-            return commissionMethodResponses;
+            commissionMethod.commissionMethodResponses = commissionMethods;
+            return commissionMethod;
         }
 
        

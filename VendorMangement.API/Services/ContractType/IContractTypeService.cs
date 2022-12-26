@@ -18,6 +18,6 @@ namespace VendorMangement.API.Services
 
         ErrorOr<Dictionary<Guid, string>> GetDictionary();
 
-        ErrorOr<IEnumerable<ContractTypeResponse>> GetAllContractTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "");
+        ErrorOr<ContractTypeResponseRoot> GetAllContractTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "");
     }
 }

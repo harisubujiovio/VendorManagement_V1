@@ -6,6 +6,12 @@ using System.Text;
 
 namespace VendorMangement.API.Services.Authentication
 {
+    public struct CustomJwtRegisteredClaimNames
+    {
+        public const string Partner = "Partner";
+
+        public const string Role = "Role";
+    }
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
         private readonly JwtSettings _jwtSettings;
@@ -14,7 +20,7 @@ namespace VendorMangement.API.Services.Authentication
         {
             _jwtSettings = jwtOptions.Value;
         }
-        public string GenerateJwtToken(Guid userId, string firstName, string lastName)
+        public string GenerateJwtToken(Guid userId, string displayName, Guid partnerid, Guid roleid)
         {
             var signingCredentials = new SigningCredentials(
                   new SymmetricSecurityKey(
@@ -24,8 +30,9 @@ namespace VendorMangement.API.Services.Authentication
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub,userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.GivenName,firstName),
-                new Claim(JwtRegisteredClaimNames.FamilyName,lastName),
+                new Claim(JwtRegisteredClaimNames.FamilyName,displayName),
+                new Claim(CustomJwtRegisteredClaimNames.Role,roleid.ToString()),
+                new Claim(CustomJwtRegisteredClaimNames.Partner,partnerid.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
             };
 

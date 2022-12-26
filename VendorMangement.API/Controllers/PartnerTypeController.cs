@@ -57,7 +57,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetAllPartnerTypes")]
         public IActionResult GetAllPartnerTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<IEnumerable<PartnerTypeResponse>> getAllPartnerTypeMethodResult = _partnerTypeService.GetAllPartnerTypes(pageNo, pageSize, sortCol, sortType);
+            ErrorOr<PartnerTypeResponseRoot> getAllPartnerTypeMethodResult = _partnerTypeService.GetAllPartnerTypes(pageNo, pageSize, sortCol, sortType);
             return getAllPartnerTypeMethodResult.Match(
                   partnerTypeResponses => Ok(partnerTypeResponses),
                   errors => Problem(errors)

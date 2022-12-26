@@ -65,8 +65,9 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<IEnumerable<RoleResponse>> GetAllRoles(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<RoleResponseRoot> GetAllRoles(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
+            RoleResponseRoot roleResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
             _vendorDbOperator.InitializeOperator("vm_sp_GetRoles", CommandType.StoredProcedure, parameters);
             IDataReader dr = _queryExecutor.ExecuteReader();
@@ -83,11 +84,11 @@ namespace VendorMangement.API.Services
                           this.AgainstString(dr["lastModifiedBy"]),
                           this.AgainstNullableDatetime(dr["lastModifiedDate"])
                         );
-
+                roleResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"])
                 roleResponses.Add(roleResponse);
             }
-
-            return roleResponses;
+            roleResponseRoot.roleResponses = roleResponses;
+            return roleResponseRoot;
         }
     }
 }

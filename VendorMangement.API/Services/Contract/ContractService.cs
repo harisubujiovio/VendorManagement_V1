@@ -73,10 +73,11 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<IEnumerable<ContractResponse>> GetAllContracts(string partnerId,
+        public ErrorOr<ContractResponseRoot> GetAllContracts(string partnerId,
             string contractTypeId, string commissionMethodId, string contractStatusId,
             int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
+            ContractResponseRoot contractResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
             SqlParameter sqlParameter = new SqlParameter();
             sqlParameter.ParameterName = "@partnerId";
@@ -123,13 +124,12 @@ namespace VendorMangement.API.Services
                           this.AgainstDatetime(dr["CreatedDate"]),
                           this.AgainstString(dr["lastModifiedBy"]),
                           this.AgainstNullableDatetime(dr["lastModifiedDate"])
-                          
                         );
-
+                contractResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 contractResponses.Add(contractResponse);
             }
-
-            return contractResponses;
+            contractResponseRoot.contractResponses = contractResponses;
+            return contractResponseRoot;
         }
     }
 }

@@ -1,12 +1,8 @@
 ﻿using ErrorOr;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VendorManagement.Contracts;
 using VendorManagement.Contracts.Authentication;
 using VendorManagement.DBclient.Models;
-using VendorMangement.API.Services;
-using VendorMangement.API.Services.Authentication;
 using IAuthenticationService = VendorMangement.API.Services.Authentication.IAuthenticationService;
 using UserModel = VendorManagement.DBclient.Models.User;
 namespace VendorMangement.API.Controllers
@@ -14,12 +10,10 @@ namespace VendorMangement.API.Controllers
     public class AuthenticationController : ApiController
     {
         public readonly IAuthenticationService _authenticationService;
-        public readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public AuthenticationController(IAuthenticationService authenticationService, IJwtTokenGenerator jwtTokenGenerator)
+        public AuthenticationController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
-            _jwtTokenGenerator = jwtTokenGenerator;
         }
         [HttpPost]
         [AllowAnonymous]
@@ -33,12 +27,7 @@ namespace VendorMangement.API.Controllers
             }
            
             ErrorOr<LoginResponse> signinLoginResult = _authenticationService.Login(loginRequest);
-            if (!signinLoginResult.IsError)
-            {
-                LoginResponse response = signinLoginResult.Value;
-                response.token = _jwtTokenGenerator.GenerateJwtToken(response.UserId,
-                    response.firstName, response.lastName);
-            }
+
             return signinLoginResult.Match(
                   success => Ok(success),
                   errors => Problem(errors)
@@ -67,8 +56,8 @@ namespace VendorMangement.API.Controllers
                 response.email = user.email;
                 response.address = user.Address;
                 response.mobileNumber = user.MobileNumber;
-                response.token = _jwtTokenGenerator.GenerateJwtToken(response.UserId,
-                    response.firstName, response.lastName);
+                //response.token = _jwtTokenGenerator.GenerateJwtToken(response.UserId,
+                //    response.firstName, response.lastName);
             }
             return createUserResult.Match(
                   success => Ok(response),

@@ -69,8 +69,9 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<IEnumerable<PartnerResponse>> GetAllPartners(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<PartnerResponseRoot> GetAllPartners(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
+            PartnerResponseRoot partnerResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
             _vendorDbOperator.InitializeOperator("vm_sp_GetPartners", CommandType.StoredProcedure, parameters);
             IDataReader dr = _queryExecutor.ExecuteReader();
@@ -90,11 +91,11 @@ namespace VendorMangement.API.Services
                           this.AgainstString(dr["lastModifiedBy"]),
                           this.AgainstNullableDatetime(dr["lastModifiedDate"])
                         );
-
+                partnerResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 partnerResponses.Add(partnerResponse);
             }
-
-            return partnerResponses;
+            partnerResponseRoot.partnerResponses = partnerResponses;
+            return partnerResponseRoot;
         }
     }
 }

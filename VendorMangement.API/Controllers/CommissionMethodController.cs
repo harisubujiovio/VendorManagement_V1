@@ -56,7 +56,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetAllCommissionMethods")]
         public IActionResult GetAllCommissionMethods(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<IEnumerable<CommissionMethodResponse>> getAllCommissionMethodResult  = _commissionMethodeService.GetAllCommissionMethods(pageNo, pageSize, sortCol, sortType);
+            ErrorOr<CommissionMethodResponseRoot> getAllCommissionMethodResult  = _commissionMethodeService.GetAllCommissionMethods(pageNo, pageSize, sortCol, sortType);
             return getAllCommissionMethodResult.Match(
                   commissionMethodResponses => Ok(commissionMethodResponses),
                   errors => Problem(errors)

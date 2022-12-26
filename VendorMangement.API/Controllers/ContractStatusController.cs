@@ -56,7 +56,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetAllContractStatus")]
         public IActionResult GetAllContractStatus(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<IEnumerable<ContractStatusResponse>> getAllContractStatusMethodResult = _contractStatusService.GetAllContractStatus(pageNo, pageSize, sortCol, sortType);
+            ErrorOr<ContractStatusResponseRoot> getAllContractStatusMethodResult = _contractStatusService.GetAllContractStatus(pageNo, pageSize, sortCol, sortType);
             return getAllContractStatusMethodResult.Match(
                   contractStatusResponses => Ok(contractStatusResponses),
                   errors => Problem(errors)

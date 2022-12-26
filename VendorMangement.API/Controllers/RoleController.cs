@@ -55,7 +55,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetAllRoles")]
         public IActionResult GetAllRoles(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<IEnumerable<RoleResponse>> getAllRoleMethodResult = _roleService.GetAllRoles(pageNo, pageSize, sortCol, sortType);
+            ErrorOr<RoleResponseRoot> getAllRoleMethodResult = _roleService.GetAllRoles(pageNo, pageSize, sortCol, sortType);
             return getAllRoleMethodResult.Match(
                   roleResponses => Ok(roleResponses),
                   errors => Problem(errors)

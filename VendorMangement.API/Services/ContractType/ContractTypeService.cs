@@ -59,8 +59,9 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<IEnumerable<ContractTypeResponse>> GetAllContractTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<ContractTypeResponseRoot> GetAllContractTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
+            ContractTypeResponseRoot contractTypeResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
             _vendorDbOperator.InitializeOperator("vm_sp_GetContractTypes", CommandType.StoredProcedure, parameters);
             IDataReader dr = _queryExecutor.ExecuteReader();
@@ -77,11 +78,11 @@ namespace VendorMangement.API.Services
                           this.AgainstString(dr["lastModifiedBy"]),
                           this.AgainstNullableDatetime(dr["lastModifiedDate"])
                         );
-
+                contractTypeResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 contractTypeResponses.Add(contractTypeResponse);
             }
-
-            return contractTypeResponses;
+            contractTypeResponseRoot.contractTypeResponses = contractTypeResponses;
+            return contractTypeResponseRoot;
         }
     }
 }

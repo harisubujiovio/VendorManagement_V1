@@ -15,7 +15,7 @@ namespace VendorMangement.API.Services
         ErrorOr<Deleted> DeletePartnerType(Guid id);
         ErrorOr<Dictionary<Guid, string>> GetDictionary();
 
-        ErrorOr<IEnumerable<PartnerTypeResponse>> GetAllPartnerTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "");
+        ErrorOr<PartnerTypeResponseRoot> GetAllPartnerTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "");
 
     }
 }

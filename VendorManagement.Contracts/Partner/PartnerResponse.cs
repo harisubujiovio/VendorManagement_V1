@@ -7,6 +7,12 @@ using VendorManagement.Contracts.Base;
 
 namespace VendorManagement.Contracts
 {
+    public record PartnerResponseRoot
+    {
+        public IEnumerable<PartnerResponse> partnerResponses { get; set; }
+
+        public int totalRows { get; set; }
+    }
     public record PartnerResponse : AuditTrialResponse
     {
         public string PartnerNo { get; set; }
