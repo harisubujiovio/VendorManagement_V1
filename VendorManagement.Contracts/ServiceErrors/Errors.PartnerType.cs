@@ -191,9 +191,9 @@ namespace VendorManagement.Contracts.ServiceErrors
                 code: "Sales.InvalidDocumentType",
                 description: $"Document Type should not be empty");
 
-            public static Error InvalidDocumentNo => Error.Validation(
-               code: "Sales.InvalidDocumentNo",
-               description: $"Document No should not be 0");
+            public static Error InvalidCode => Error.Validation(
+               code: "Sales.InvalidCode",
+               description: $"Code should not be empty");
 
             public static Error InvalidDocumentLineNo => Error.Validation(
              code: "Sales.InvalidDocumentLineNo",

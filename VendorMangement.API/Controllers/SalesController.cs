@@ -103,7 +103,7 @@ namespace VendorMangement.API.Controllers
                  sales.Source,
                  sales.PartnerId.ToString(),
                  sales.DocumentType,
-                 sales.DocumentNo,
+                 sales.Code,
                  sales.DocumentLineNo,
                  sales.Date,
                  sales.No,

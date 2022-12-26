@@ -15,7 +15,7 @@ namespace VendorManagement.Contracts
         public string PartnerId { get; set; }
         public string DocumentType { get; set; }
 
-        public int DocumentNo { get; set; }
+        public string Code { get; set; }
 
         public int DocumentLineNo { get; set; }
 

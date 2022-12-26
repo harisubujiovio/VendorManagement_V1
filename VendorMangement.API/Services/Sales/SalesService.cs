@@ -50,7 +50,7 @@ namespace VendorMangement.API.Services
             dbsales.Source = sales.Source;
             dbsales.PartnerId = sales.PartnerId;
             dbsales.DocumentType = sales.DocumentType;
-            dbsales.DocumentNo = sales.DocumentNo;
+            dbsales.Code = sales.Code;
             dbsales.DocumentLineNo = sales.DocumentLineNo;
             dbsales.Date = sales.Date;
             dbsales.No = sales.No;
@@ -107,7 +107,7 @@ namespace VendorMangement.API.Services
                           this.AgainstString(dr["Source"]),
                           this.AgainstString(dr["PartnerId"]),
                           this.AgainstString(dr["DocumentType"]),
-                          this.AgainstInt(dr["DocumentNo"]),
+                          this.AgainstString(dr["Code"]),
                           this.AgainstInt(dr["DocumentLineNo"]),
                           this.AgainstDatetime(dr["Date"]),
                           this.AgainstString(dr["No"]),

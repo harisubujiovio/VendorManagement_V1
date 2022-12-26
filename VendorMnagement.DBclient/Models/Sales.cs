@@ -16,7 +16,7 @@ namespace VendorManagement.DBclient.Models
         public Guid PartnerId { get; set; }
         public string DocumentType { get; set; }
 
-        public int DocumentNo { get; set; }
+        public string Code { get; set; }
 
         public int DocumentLineNo { get; set; }
 
@@ -76,7 +76,7 @@ namespace VendorManagement.DBclient.Models
             sales.Source = salesRequest.Source;
             sales.PartnerId = new Guid(salesRequest.PartnerId);
             sales.DocumentType = salesRequest.DocumentType;
-            sales.DocumentNo= salesRequest.DocumentNo;  
+            sales.Code= salesRequest.Code;  
             sales.DocumentLineNo= salesRequest.DocumentLineNo;
             sales.Date = salesRequest.Date;
             sales.No= salesRequest.No;
@@ -110,7 +110,7 @@ namespace VendorManagement.DBclient.Models
             sales.Source = salesRequest.Source;
             sales.PartnerId = new Guid(salesRequest.PartnerId);
             sales.DocumentType = salesRequest.DocumentType;
-            sales.DocumentNo = salesRequest.DocumentNo;
+            sales.Code = salesRequest.Code;
             sales.DocumentLineNo = salesRequest.DocumentLineNo;
             sales.Date = salesRequest.Date;
             sales.No = salesRequest.No;
@@ -147,9 +147,9 @@ namespace VendorManagement.DBclient.Models
             {
                 errors.Add(Errors.Sales.InvalidDocumentType);
             }
-            if (salesRequest.DocumentNo < 1)
+            if (string.IsNullOrEmpty(salesRequest.Code))
             {
-                errors.Add(Errors.Sales.InvalidDocumentNo);
+                errors.Add(Errors.Sales.InvalidCode);
             }
             if (salesRequest.DocumentLineNo < 1)
             {
