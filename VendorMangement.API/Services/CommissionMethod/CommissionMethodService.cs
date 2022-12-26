@@ -66,7 +66,7 @@ namespace VendorMangement.API.Services
             return keyValues;
         }
 
-        public ErrorOr<CommissionMethodResponseRoot> GetAllCommissionMethods(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<CommissionMethodResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             CommissionMethodResponseRoot commissionMethod = new CommissionMethodResponseRoot();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
@@ -87,7 +87,7 @@ namespace VendorMangement.API.Services
                 commissionMethods.Add(commissionMethodResponse);
                 commissionMethod.totalRows = this.AgainstInt(dr["TotalCount"]);
             }
-            commissionMethod.commissionMethodResponses = commissionMethods;
+            commissionMethod.responses = commissionMethods;
             return commissionMethod;
         }
 

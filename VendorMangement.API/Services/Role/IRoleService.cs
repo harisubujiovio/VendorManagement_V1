@@ -15,6 +15,6 @@ namespace VendorMangement.API.Services
         ErrorOr<Deleted> DeleteRole(Guid id);
         ErrorOr<Dictionary<Guid, string>> GetDictionary();
 
-        ErrorOr<RoleResponseRoot> GetAllRoles(int pageNo, int pageSize, string sortCol = "", string sortType = "");
+        ErrorOr<RoleResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "");
     }
 }

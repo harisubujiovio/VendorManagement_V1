@@ -73,7 +73,7 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<ContractResponseRoot> GetAllContracts(string partnerId,
+        public ErrorOr<ContractResponseRoot> GetAll(string partnerId,
             string contractTypeId, string commissionMethodId, string contractStatusId,
             int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
@@ -128,7 +128,7 @@ namespace VendorMangement.API.Services
                 contractResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 contractResponses.Add(contractResponse);
             }
-            contractResponseRoot.contractResponses = contractResponses;
+            contractResponseRoot.responses = contractResponses;
             return contractResponseRoot;
         }
     }

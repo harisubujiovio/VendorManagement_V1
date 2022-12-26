@@ -52,10 +52,10 @@ namespace VendorMangement.API.Controllers
                 );
         }
         [HttpGet()]
-        [Route("GetAllRoles")]
-        public IActionResult GetAllRoles(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        [Route("GetAll")]
+        public IActionResult GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<RoleResponseRoot> getAllRoleMethodResult = _roleService.GetAllRoles(pageNo, pageSize, sortCol, sortType);
+            ErrorOr<RoleResponseRoot> getAllRoleMethodResult = _roleService.GetAll(pageNo, pageSize, sortCol, sortType);
             return getAllRoleMethodResult.Match(
                   roleResponses => Ok(roleResponses),
                   errors => Problem(errors)

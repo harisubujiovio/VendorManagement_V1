@@ -9,7 +9,7 @@ namespace VendorManagement.Contracts
 {
     public record ContractResponseRoot
     {
-        public IEnumerable<ContractResponse> contractResponses { get; set; }
+        public IEnumerable<ContractResponse> responses { get; set; }
 
         public int totalRows { get; set; }
     }

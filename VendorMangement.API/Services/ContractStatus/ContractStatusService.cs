@@ -67,7 +67,7 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<ContractStatusResponseRoot> GetAllContractStatus(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<ContractStatusResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             ContractStatusResponseRoot contractStatusResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
@@ -89,7 +89,7 @@ namespace VendorMangement.API.Services
                 contractStatusResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 contractStatusResponses.Add(contractStatusResponse);
             }
-            contractStatusResponseRoot.contractStatusResponses = contractStatusResponses;
+            contractStatusResponseRoot.responses = contractStatusResponses;
             return contractStatusResponseRoot;
         }
     }

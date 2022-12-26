@@ -85,7 +85,7 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<SalesResponseRoot> GetAllSales(string partnerId,int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<SalesResponseRoot> GetAll(string partnerId,int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             SalesResponseRoot salesResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
@@ -134,7 +134,7 @@ namespace VendorMangement.API.Services
                 salesResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 salesResponses.Add(salesResponse);
             }
-            salesResponseRoot.salesResponses= salesResponses;
+            salesResponseRoot.responses = salesResponses;
             return salesResponseRoot;
         }
     }

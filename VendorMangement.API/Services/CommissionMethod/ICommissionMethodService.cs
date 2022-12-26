@@ -17,6 +17,6 @@ namespace VendorMangement.API.Services
 
         ErrorOr<Dictionary<Guid, string>> GetDictionary();
 
-        ErrorOr<CommissionMethodResponseRoot> GetAllCommissionMethods(int pageNo, int pageSize,string sortCol = "", string sortType = "");
+        ErrorOr<CommissionMethodResponseRoot> GetAll(int pageNo, int pageSize,string sortCol = "", string sortType = "");
     }
 }

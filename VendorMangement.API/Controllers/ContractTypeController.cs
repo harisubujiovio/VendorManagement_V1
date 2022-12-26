@@ -66,10 +66,10 @@ namespace VendorMangement.API.Controllers
                 );
         }
         [HttpGet()]
-        [Route("GetAllContractTypes")]
-        public IActionResult GetAllContractTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        [Route("GetAll")]
+        public IActionResult GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<ContractTypeResponseRoot> getAllContractTypeMethodResult = _contractTypeService.GetAllContractTypes(pageNo, pageSize, sortCol, sortType);
+            ErrorOr<ContractTypeResponseRoot> getAllContractTypeMethodResult = _contractTypeService.GetAll(pageNo, pageSize, sortCol, sortType);
             return getAllContractTypeMethodResult.Match(
                   contractStatusResponses => Ok(contractStatusResponses),
                   errors => Problem(errors)

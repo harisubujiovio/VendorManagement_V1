@@ -68,7 +68,7 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<StatementResponseRoot> GetAllStatements(string partnerId, string contractId, 
+        public ErrorOr<StatementResponseRoot> GetAll(string partnerId, string contractId, 
             int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             StatementResponseRoot statementResponseRoot = new();
@@ -110,7 +110,7 @@ namespace VendorMangement.API.Services
                 statementResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 statementResponses.Add(statementResponse);
             }
-            statementResponseRoot.statementResponses = statementResponses;
+            statementResponseRoot.responses = statementResponses;
             return statementResponseRoot;
         }
     }

@@ -69,7 +69,7 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<PartnerResponseRoot> GetAllPartners(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<PartnerResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             PartnerResponseRoot partnerResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
@@ -94,7 +94,7 @@ namespace VendorMangement.API.Services
                 partnerResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 partnerResponses.Add(partnerResponse);
             }
-            partnerResponseRoot.partnerResponses = partnerResponses;
+            partnerResponseRoot.responses = partnerResponses;
             return partnerResponseRoot;
         }
     }

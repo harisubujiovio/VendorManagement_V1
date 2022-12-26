@@ -65,7 +65,7 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<RoleResponseRoot> GetAllRoles(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<RoleResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             RoleResponseRoot roleResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
@@ -87,7 +87,7 @@ namespace VendorMangement.API.Services
                 roleResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 roleResponses.Add(roleResponse);
             }
-            roleResponseRoot.roleResponses = roleResponses;
+            roleResponseRoot.responses = roleResponses;
             return roleResponseRoot;
         }
     }

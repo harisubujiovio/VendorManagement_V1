@@ -16,7 +16,7 @@ namespace VendorMangement.API.Services
 
         ErrorOr<Dictionary<Guid, string>> GetDictionary();
 
-        ErrorOr<ContractResponseRoot> GetAllContracts(string partnerId,
+        ErrorOr<ContractResponseRoot> GetAll(string partnerId,
             string contractTypeId = "",string commissionMethodId = "",string contractStatusId = "",
             int pageNo = 0, int pageSize = 10, string sortCol = "", string sortType = "");
     }

@@ -54,10 +54,10 @@ namespace VendorMangement.API.Controllers
                 );
         }
         [HttpGet()]
-        [Route("GetAllPartnerTypes")]
-        public IActionResult GetAllPartnerTypes(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        [Route("GetAll")]
+        public IActionResult GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<PartnerTypeResponseRoot> getAllPartnerTypeMethodResult = _partnerTypeService.GetAllPartnerTypes(pageNo, pageSize, sortCol, sortType);
+            ErrorOr<PartnerTypeResponseRoot> getAllPartnerTypeMethodResult = _partnerTypeService.GetAll(pageNo, pageSize, sortCol, sortType);
             return getAllPartnerTypeMethodResult.Match(
                   partnerTypeResponses => Ok(partnerTypeResponses),
                   errors => Problem(errors)
