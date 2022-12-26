@@ -84,7 +84,7 @@ namespace VendorMangement.API.Services
                           this.AgainstString(dr["lastModifiedBy"]),
                           this.AgainstNullableDatetime(dr["lastModifiedDate"])
                         );
-                roleResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"])
+                roleResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 roleResponses.Add(roleResponse);
             }
             roleResponseRoot.roleResponses = roleResponses;

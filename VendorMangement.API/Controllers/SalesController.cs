@@ -55,7 +55,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetAllSales")]
         public IActionResult GetAllSales(string partnerId,int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<IEnumerable<SalesResponse>> getAllSalesMethodResult = _salesSevice.GetAllSales(partnerId, pageNo, pageSize, sortCol, sortType);
+            ErrorOr<SalesResponseRoot> getAllSalesMethodResult = _salesSevice.GetAllSales(partnerId, pageNo, pageSize, sortCol, sortType);
             return getAllSalesMethodResult.Match(
                   salesResponses => Ok(salesResponses),
                   errors => Problem(errors)

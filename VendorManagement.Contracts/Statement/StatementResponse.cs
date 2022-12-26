@@ -8,6 +8,12 @@ using VendorManagement.Contracts.Base;
 
 namespace VendorManagement.Contracts
 {
+    public record StatementResponseRoot
+    {
+        public IEnumerable<StatementResponse> statementResponses { get; set; }
+
+        public int totalRows { get; set; }
+    }
     public record StatementResponse : AuditTrialResponse
     {
         public DateTime StatementDate { get; set; }

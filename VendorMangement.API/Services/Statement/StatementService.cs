@@ -68,9 +68,10 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<IEnumerable<StatementResponse>> GetAllStatements(string partnerId, string contractId, 
+        public ErrorOr<StatementResponseRoot> GetAllStatements(string partnerId, string contractId, 
             int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
+            StatementResponseRoot statementResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
             SqlParameter sqlParameter = new SqlParameter();
             sqlParameter.ParameterName = "@partnerId";
@@ -106,11 +107,11 @@ namespace VendorMangement.API.Services
                           this.AgainstNullableDatetime(dr["lastModifiedDate"])
 
                         );
-
+                statementResponseRoot.totalRows = this.AgainstInt(dr["TotalCount"]);
                 statementResponses.Add(statementResponse);
             }
-
-            return statementResponses;
+            statementResponseRoot.statementResponses = statementResponses;
+            return statementResponseRoot;
         }
     }
 }
