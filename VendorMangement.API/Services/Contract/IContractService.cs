@@ -14,7 +14,7 @@ namespace VendorMangement.API.Services
 
         ErrorOr<Deleted> DeleteContract(Guid id);
 
-        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+        ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary();
 
         ErrorOr<ContractResponseRoot> GetAll(string partnerId,
             string contractTypeId = "",string commissionMethodId = "",string contractStatusId = "",

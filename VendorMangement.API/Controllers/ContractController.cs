@@ -45,7 +45,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetDictionary")]
         public IActionResult GetDictionary()
         {
-            ErrorOr<Dictionary<Guid, string>> getDictionaryResult = _contractService.GetDictionary();
+            ErrorOr<IEnumerable<ResourceDictionary>> getDictionaryResult = _contractService.GetDictionary();
             return getDictionaryResult.Match(
                   contract => Ok(contract),
                   errors => Problem(errors)
@@ -103,13 +103,17 @@ namespace VendorMangement.API.Controllers
                  contract.Guid,
                  contract.ContractNo,
                  contract.ContractTypeId.ToString(),
+                 "",
                  contract.ContractDate,
                  contract.StartDate,
                  contract.EndDate,
                  contract.RenewalDate,
                  contract.CommissionMethodId.ToString(),
+                 "",
                  contract.ContractStatusId.ToString(),
+                 "",
                  contract.PartnerId.ToString(),
+                 "",
                  contract.CreatedBy,
                  contract.CreatedDate,
                  contract.LastModifiedBy,

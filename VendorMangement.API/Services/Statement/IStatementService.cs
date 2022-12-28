@@ -13,7 +13,7 @@ namespace VendorMangement.API.Services
         ErrorOr<Updated> UpdateStatement(Guid id, Statement statement);
 
         ErrorOr<Deleted> DeleteStatement(Guid id);
-        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+        ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary();
 
         ErrorOr<StatementResponseRoot> GetAll(string partnerId,string contractId, int pageNo, int pageSize, string sortCol = "", string sortType = "");
     }

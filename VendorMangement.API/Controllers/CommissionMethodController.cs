@@ -46,7 +46,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetDictionary")]
         public IActionResult GetDictionary()
         {
-            ErrorOr<Dictionary<Guid, string>> getDictionaryResult = _commissionMethodeService.GetDictionary();
+            ErrorOr<IEnumerable<ResourceDictionary>> getDictionaryResult = _commissionMethodeService.GetDictionary();
             return getDictionaryResult.Match(
                   commissionMethod => Ok(commissionMethod),
                   errors => Problem(errors)

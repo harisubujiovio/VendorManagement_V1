@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VendorManagement.Contracts;
 using VendorManagement.Contracts.Authentication;
 using VendorManagement.Contracts.Common;
 using VendorManagement.Contracts.ServiceErrors;
@@ -41,6 +42,27 @@ namespace VendorManagement.DBclient.Models
                 return errors;
             return loginRequest;
 
+        }
+        public static ErrorOr<User> From(Guid Id, UserRequest userRequest)
+        {
+            return Update(userRequest);
+        }
+        private static ErrorOr<User> Update(UserRequest userRequest)
+        {
+            List<Error> errors = Validate(userRequest);
+
+            if (errors.Count > 0)
+                return errors;
+
+            User user = new User();
+            user.firstName = userRequest.firstName;
+            user.lastName = userRequest.lastName;
+            user.email = userRequest.email;
+            user.MobileNumber = userRequest.MobileNumber;
+            user.Address = userRequest.Address;
+            user.LastModifiedDate = DateTime.UtcNow;
+            user.LastModifiedBy = "System";
+            return user;
         }
         public static ErrorOr<User> From(RegisterRequest registerRequest)
         {
@@ -97,6 +119,25 @@ namespace VendorManagement.DBclient.Models
             {
                 errors.Add(Errors.Register.InvalidRole);
             }
+            return errors;
+        }
+
+        private static List<Error> Validate(UserRequest userRequest)
+        {
+            List<Error> errors = new();
+            if (string.IsNullOrEmpty(userRequest.firstName))
+            {
+                errors.Add(Errors.User.InvalidfirstName);
+            }
+            if (string.IsNullOrEmpty(userRequest.lastName))
+            {
+                errors.Add(Errors.User.InvalidlastName);
+            }
+            if (string.IsNullOrEmpty(userRequest.email))
+            {
+                errors.Add(Errors.User.InvalidEmail);
+            }
+            
             return errors;
         }
     }

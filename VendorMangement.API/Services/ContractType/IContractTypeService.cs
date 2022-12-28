@@ -16,7 +16,7 @@ namespace VendorMangement.API.Services
 
         void DeleteContractType(Guid id);
 
-        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+        ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary();
 
         ErrorOr<ContractTypeResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "");
     }

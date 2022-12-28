@@ -31,7 +31,7 @@ namespace VendorMangement.API.Services
         {
             var partnerType = _vendorManagementDbContext.PartnerTypes.Find(id);
             _vendorManagementDbContext.PartnerTypes.Remove(partnerType);
-
+            _vendorManagementDbContext.SaveChanges();
             return Result.Deleted;
         }
 
@@ -54,17 +54,21 @@ namespace VendorMangement.API.Services
 
             return Result.Updated;
         }
-        public ErrorOr<Dictionary<Guid, string>> GetDictionary()
+        public ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary()
         {
+            List<ResourceDictionary> resourceDictionaries = new();
+            ResourceDictionary resourceDictionary = null;
             _vendorDbOperator.InitializeOperator("vm_sp_GetAllPartnerTypes", CommandType.StoredProcedure, null);
             IDataReader dr = _queryExecutor.ExecuteReader();
             Dictionary<Guid, string> keyValues = new Dictionary<Guid, string>();
             while (dr.Read())
             {
-                keyValues.Add(new Guid(dr["Guid"].ToString()), dr["Description"].ToString());
+                resourceDictionary = new(new Guid(dr["Guid"].ToString()), dr["Description"].ToString());
+                resourceDictionaries.Add(resourceDictionary);
             }
-            return keyValues;
+            return resourceDictionaries;
         }
+    
         public ErrorOr<PartnerTypeResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             PartnerTypeResponseRoot partnerTypeResponseRoot = new();

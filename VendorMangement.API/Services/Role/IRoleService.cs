@@ -13,7 +13,7 @@ namespace VendorMangement.API.Services
         ErrorOr<Updated> UpdateRole(Guid id, Role partnerTypeRequest);
 
         ErrorOr<Deleted> DeleteRole(Guid id);
-        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+        ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary();
 
         ErrorOr<RoleResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "");
     }

@@ -13,7 +13,7 @@ namespace VendorMangement.API.Services
         ErrorOr<Updated> UpdatePartnerType(Guid id,PartnerType partnerTypeRequest);
 
         ErrorOr<Deleted> DeletePartnerType(Guid id);
-        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+        ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary();
 
         ErrorOr<PartnerTypeResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "");
 

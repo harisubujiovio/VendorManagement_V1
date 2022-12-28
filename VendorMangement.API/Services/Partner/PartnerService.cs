@@ -31,7 +31,7 @@ namespace VendorMangement.API.Services
         {
             var partner = _vendorManagementDbContext.Partners.Find(id);
             _vendorManagementDbContext.Partners.Remove(partner);
-
+            _vendorManagementDbContext.SaveChanges();
             return Result.Deleted;
         }
 
@@ -58,17 +58,21 @@ namespace VendorMangement.API.Services
 
             return Result.Updated;
         }
-        public ErrorOr<Dictionary<Guid, string>> GetDictionary()
+        public ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary()
         {
+            List<ResourceDictionary> resourceDictionaries = new();
+            ResourceDictionary resourceDictionary = null;
             _vendorDbOperator.InitializeOperator("vm_sp_GetAllPartners", CommandType.StoredProcedure, null);
             IDataReader dr = _queryExecutor.ExecuteReader();
             Dictionary<Guid, string> keyValues = new Dictionary<Guid, string>();
             while (dr.Read())
             {
-                keyValues.Add(new Guid(dr["Guid"].ToString()), dr["PartnerName"].ToString());
+                resourceDictionary = new(new Guid(dr["Guid"].ToString()), dr["Description"].ToString());
+                resourceDictionaries.Add(resourceDictionary);
             }
-            return keyValues;
+            return resourceDictionaries;
         }
+       
         public ErrorOr<PartnerResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             PartnerResponseRoot partnerResponseRoot = new();
@@ -86,6 +90,7 @@ namespace VendorMangement.API.Services
                           this.AgainstString(dr["Email"]),
                           this.AgainstString(dr["MobileNumber"]),
                           this.AgainstGUID(dr["PartnerTypeId"]),
+                          this.AgainstString(dr["PartnerType"]),
                           this.AgainstString(dr["CreatedBy"]),
                           this.AgainstDatetime(dr["CreatedDate"]),
                           this.AgainstString(dr["lastModifiedBy"]),

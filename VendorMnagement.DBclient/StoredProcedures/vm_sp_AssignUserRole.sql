@@ -12,7 +12,7 @@ Create PROCEDURE [dbo].[vm_sp_AssignUserRole]
 @roleId uniqueidentifier
 AS
 BEGIN
-
+  delete from RoleUser where [UsersGuid] = @userId and [RolesGuid] = @roleId
   if not exists(select * from RoleUser where [UsersGuid] = @userId and [RolesGuid] = @roleId)
   BEGIN
      insert into [RoleUser]([UsersGuid],[RolesGuid]) values(@userId,@roleId)

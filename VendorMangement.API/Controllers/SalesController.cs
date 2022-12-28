@@ -102,6 +102,7 @@ namespace VendorMangement.API.Controllers
                  sales.EntryNo,
                  sales.Source,
                  sales.PartnerId.ToString(),
+                 "",
                  sales.DocumentType,
                  sales.Code,
                  sales.DocumentLineNo,

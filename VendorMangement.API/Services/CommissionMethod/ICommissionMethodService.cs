@@ -15,7 +15,7 @@ namespace VendorMangement.API.Services
 
         ErrorOr<Deleted> DeleteCommissionMethod(Guid id);
 
-        ErrorOr<Dictionary<Guid, string>> GetDictionary();
+        ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary();
 
         ErrorOr<CommissionMethodResponseRoot> GetAll(int pageNo, int pageSize,string sortCol = "", string sortType = "");
     }

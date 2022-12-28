@@ -247,5 +247,23 @@ namespace VendorManagement.Contracts.ServiceErrors
               code: "Statement.NotFound",
               description: "Statement not found");
         }
+        public static class User
+        {
+            public static Error InvalidfirstName => Error.Validation(
+                code: "User.InvalidfirstName",
+                description: $"First name should not be empty");
+
+            public static Error InvalidlastName => Error.Validation(
+                code: "User.InvalidPartnerId",
+                description: $"Last name should not be empty");
+
+            public static Error InvalidEmail => Error.Validation(
+               code: "User.InvalidEmail",
+               description: $"Email should not be empty");
+
+            public static Error NotFound => Error.NotFound(
+              code: "User.NotFound",
+              description: "User not found");
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetDictionary")]
         public IActionResult GetDictionary()
         {
-            ErrorOr<Dictionary<Guid, string>> getDictionaryResult = _partnerService.GetDictionary();
+            ErrorOr<IEnumerable<ResourceDictionary>> getDictionaryResult = _partnerService.GetDictionary();
             return getDictionaryResult.Match(
                   commissionMethod => Ok(commissionMethod),
                   errors => Problem(errors)
@@ -83,6 +83,7 @@ namespace VendorMangement.API.Controllers
                  partner.Email,
                  partner.MobileNumber,
                  partner.PartnerTypeId,
+                 "",
                  partner.CreatedBy,
                  partner.CreatedDate,
                  partner.LastModifiedBy,
@@ -118,6 +119,7 @@ namespace VendorMangement.API.Controllers
                  partner.Email,
                  partner.MobileNumber,
                  partner.PartnerTypeId,
+                 "",
                  partner.CreatedBy,
                  partner.CreatedDate,
                  partner.LastModifiedBy,

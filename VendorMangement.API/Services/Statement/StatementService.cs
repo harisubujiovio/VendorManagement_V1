@@ -31,7 +31,7 @@ namespace VendorMangement.API.Services
         {
             var statement = _vendorManagementDbContext.Statements.Find(id);
             _vendorManagementDbContext.Statements.Remove(statement);
-
+            _vendorManagementDbContext.SaveChanges();
             return Result.Deleted;
         }
         public ErrorOr<Statement> GetStatement(Guid id)
@@ -57,16 +57,19 @@ namespace VendorMangement.API.Services
 
             return Result.Updated;
         }
-        public ErrorOr<Dictionary<Guid, string>> GetDictionary()
+        public ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary()
         {
+            List<ResourceDictionary> resourceDictionaries = new();
+            ResourceDictionary resourceDictionary = null;
             _vendorDbOperator.InitializeOperator("vm_sp_GetAllStatements", CommandType.StoredProcedure, null);
             IDataReader dr = _queryExecutor.ExecuteReader();
-            Dictionary<Guid, string> keyValues = new Dictionary<Guid, string>();
             while (dr.Read())
             {
-                keyValues.Add(new Guid(dr["Guid"].ToString()), dr["StatementNo"].ToString());
+                resourceDictionary = new(new Guid(dr["Guid"].ToString()), dr["Displayname"].ToString());
+                resourceDictionaries.Add(resourceDictionary);
             }
-            return keyValues;
+            return resourceDictionaries;
+          
         }
         public ErrorOr<StatementResponseRoot> GetAll(string partnerId, string contractId, 
             int pageNo, int pageSize, string sortCol = "", string sortType = "")

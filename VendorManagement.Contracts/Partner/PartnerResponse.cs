@@ -25,8 +25,10 @@ namespace VendorManagement.Contracts
 
         public Guid PartnerTypeId { get; set; }
 
+        public string PartnerType { get; set; }
+
         public PartnerResponse(Guid Id, string partnerNo, string partnerName, string email,string mobileNumber, Guid partnerTypeId,
-            string createdBy, DateTime createdDate, string lastModifiedBy, DateTime? lastModifiedDate)
+           string partnerType, string createdBy, DateTime createdDate, string lastModifiedBy, DateTime? lastModifiedDate)
         {
             this.Id = Id;
             this.PartnerNo = partnerNo;
@@ -34,6 +36,7 @@ namespace VendorManagement.Contracts
             this.Email = email;
             this.MobileNumber = mobileNumber;
             this.PartnerTypeId = partnerTypeId;
+            this.PartnerType= partnerType;
             this.CreatedBy = createdBy;
             this.CreatedDate = createdDate;
             this.LastModifiedBy = lastModifiedBy;

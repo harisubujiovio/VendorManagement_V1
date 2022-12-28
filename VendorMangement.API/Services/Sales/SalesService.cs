@@ -32,7 +32,7 @@ namespace VendorMangement.API.Services
         {
             var sales = _vendorManagementDbContext.Sales.Find(id);
             _vendorManagementDbContext.Sales.Remove(sales);
-
+            _vendorManagementDbContext.SaveChanges();
             return Result.Deleted;
         }
         public ErrorOr<Sales> GetSales(Guid id)
@@ -106,6 +106,7 @@ namespace VendorMangement.API.Services
                           this.AgainstLong(dr["EntryNo"]),
                           this.AgainstString(dr["Source"]),
                           this.AgainstString(dr["PartnerId"]),
+                          this.AgainstString(dr["Partner"]),
                           this.AgainstString(dr["DocumentType"]),
                           this.AgainstString(dr["Code"]),
                           this.AgainstInt(dr["DocumentLineNo"]),

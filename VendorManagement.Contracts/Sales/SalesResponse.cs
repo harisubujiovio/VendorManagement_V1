@@ -18,6 +18,8 @@ namespace VendorManagement.Contracts
         public long EntryNo { get; set; }
         public string Source { get; set; }
         public string PartnerId { get; set; }
+
+        public string Partner { get; set; }
         public string DocumentType { get; set; }
 
         public string Code { get; set; }
@@ -57,8 +59,8 @@ namespace VendorManagement.Contracts
         public decimal CommissionAmount { get; set; }
 
         public decimal CostShareAmount { get; set; }
-        public SalesResponse(Guid Id, long entryNo,string source,string partnerId, string documentType,
-           string code,int documentLineNo, DateTime date,
+        public SalesResponse(Guid Id, long entryNo,string source,string partnerId, string partner,
+           string documentType,string code,int documentLineNo, DateTime date,
            string no, string quantity, string uom, decimal unitPrice,
            decimal netAmount, decimal GST, decimal discount, decimal cardPaidAmount,
            int loyaltyPoints, string promotionTxrn, decimal costShareOnDiscountAmount,
@@ -71,6 +73,7 @@ namespace VendorManagement.Contracts
             this.EntryNo = entryNo;
             this.Source = source;
             this.PartnerId = partnerId;
+            this.Partner = partner;
             this.DocumentType = documentType;
             this.Code = code;
             this.DocumentLineNo = documentLineNo;

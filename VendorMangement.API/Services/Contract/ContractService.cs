@@ -33,7 +33,7 @@ namespace VendorMangement.API.Services
         {
             var contract = _vendorManagementDbContext.Contracts.Find(id);
             _vendorManagementDbContext.Contracts.Remove(contract);
-
+            _vendorManagementDbContext.SaveChanges();
             return Result.Deleted;
         }
         public ErrorOr<Contract> GetContract(Guid id)
@@ -62,17 +62,21 @@ namespace VendorMangement.API.Services
 
             return Result.Updated;
         }
-        public ErrorOr<Dictionary<Guid, string>> GetDictionary()
+        public ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary()
         {
+            List<ResourceDictionary> resourceDictionaries = new();
+            ResourceDictionary resourceDictionary = null;
             _vendorDbOperator.InitializeOperator("vm_sp_GetAllContracts", CommandType.StoredProcedure, null);
             IDataReader dr = _queryExecutor.ExecuteReader();
             Dictionary<Guid, string> keyValues = new Dictionary<Guid, string>();
             while (dr.Read())
             {
-                keyValues.Add(new Guid(dr["Guid"].ToString()), dr["ContractNo"].ToString());
+                resourceDictionary = new(new Guid(dr["Guid"].ToString()), dr["Description"].ToString());
+                resourceDictionaries.Add(resourceDictionary);
             }
-            return keyValues;
+            return resourceDictionaries;
         }
+     
         public ErrorOr<ContractResponseRoot> GetAll(string partnerId,
             string contractTypeId, string commissionMethodId, string contractStatusId,
             int pageNo, int pageSize, string sortCol = "", string sortType = "")
@@ -113,13 +117,17 @@ namespace VendorMangement.API.Services
                           this.AgainstGUID(dr["Guid"]),
                           this.AgainstString(dr["ContractNo"]),
                           this.AgainstString(dr["ContractTypeId"]),
+                          this.AgainstString(dr["ContractType"]),
                           this.AgainstDatetime(dr["ContractDate"]),
                           this.AgainstNullableDatetime(dr["StartDate"]),
                           this.AgainstNullableDatetime(dr["EndDate"]),
                           this.AgainstNullableDatetime(dr["RenewalDate"]),
                           this.AgainstString(dr["CommissionMethodId"]),
+                          this.AgainstString(dr["CommissionMethod"]),
                           this.AgainstString(dr["ContractStatusId"]),
+                          this.AgainstString(dr["ContractStatus"]),
                           this.AgainstString(dr["PartnerId"]),
+                          this.AgainstString(dr["Partner"]),
                           this.AgainstString(dr["CreatedBy"]),
                           this.AgainstDatetime(dr["CreatedDate"]),
                           this.AgainstString(dr["lastModifiedBy"]),

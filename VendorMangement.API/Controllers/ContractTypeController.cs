@@ -59,7 +59,7 @@ namespace VendorMangement.API.Controllers
         [Route("GetDictionary")]
         public IActionResult GetDictionary()
         {
-            ErrorOr<Dictionary<Guid, string>> getDictionaryResult = _contractTypeService.GetDictionary();
+            ErrorOr<IEnumerable<ResourceDictionary>> getDictionaryResult = _contractTypeService.GetDictionary();
             return getDictionaryResult.Match(
                   contractType => Ok(contractType),
                   errors => Problem(errors)
