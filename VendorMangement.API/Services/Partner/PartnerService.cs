@@ -5,6 +5,7 @@ using VendorMnagement.DBclient.Data;
 using VendorManagement.Contracts.ServiceErrors;
 using System.Data;
 using VendorManagement.Contracts;
+using Microsoft.Data.SqlClient;
 
 namespace VendorMangement.API.Services
 {
@@ -73,10 +74,16 @@ namespace VendorMangement.API.Services
             return resourceDictionaries;
         }
        
-        public ErrorOr<PartnerResponseRoot> GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<PartnerResponseRoot> GetAll(string filterKey, int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             PartnerResponseRoot partnerResponseRoot = new();
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
+            SqlParameter sqlParameter = new SqlParameter();
+            sqlParameter.ParameterName = "@filterKey";
+            sqlParameter.SqlDbType = SqlDbType.VarChar;
+            sqlParameter.Value = string.IsNullOrEmpty(filterKey) ? string.Empty : filterKey;    
+            parameters.Add(sqlParameter);
+            
             _vendorDbOperator.InitializeOperator("vm_sp_GetPartners", CommandType.StoredProcedure, parameters);
             IDataReader dr = _queryExecutor.ExecuteReader();
             List<PartnerResponse> partnerResponses = new();

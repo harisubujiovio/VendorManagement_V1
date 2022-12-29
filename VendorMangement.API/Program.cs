@@ -67,6 +67,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ISalesSevice, SalesService>();
     builder.Services.AddScoped<IContractService, ContractService>();
     builder.Services.AddScoped<IStatementService, StatementService>();
+    builder.Services.AddScoped<ICardSummaryService, CardSummaryService>();
     builder.Services.AddDbContext<VendorManagementDbContext>(options =>
          options.UseSqlServer(builder.Configuration.GetConnectionString("VendorMgmtConnectionString")));
 }

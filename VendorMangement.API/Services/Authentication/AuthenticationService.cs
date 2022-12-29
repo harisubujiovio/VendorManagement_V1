@@ -42,7 +42,7 @@ namespace VendorMangement.API.Services.Authentication
             UserDetail user = loginUserDetailMethodResponse.Value;
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.token = _jwtTokenGenerator.GenerateJwtToken(user.userid, user.displayName,
-            user.partnerid, user.roleid);
+            user.partnerid, user.roleid, user.partner,user.role);
 
             return loginResponse;
         }
@@ -97,7 +97,9 @@ namespace VendorMangement.API.Services.Authentication
                           this.AgainstGUID(dr["UserId"]),
                           this.AgainstString(dr["DisplayName"]),
                           this.AgainstNullableGUID(dr["PartnerId"]),
-                          this.AgainstGUID(dr["RoleId"])
+                          this.AgainstGUID(dr["RoleId"]),
+                          this.AgainstString(dr["partner"]),
+                          this.AgainstString(dr["role"])
                     );
             }
 

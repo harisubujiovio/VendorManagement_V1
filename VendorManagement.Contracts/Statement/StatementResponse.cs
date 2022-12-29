@@ -28,11 +28,15 @@ namespace VendorManagement.Contracts
 
         public string PartnerId { get; set; }
 
+        public string Partner { get; set; }
+
         public string ContractId { get; set; }
 
+        public string ContractNo { get; set; }    
+
         public StatementResponse(Guid Id, DateTime statementDate,string statementNo,
-            DateTime startDate, DateTime endDate, string status, string partnerId, 
-            string contractId, string createdBy, DateTime createdDate, string lastModifiedBy,
+            DateTime startDate, DateTime endDate, string status, string partnerId, string partner,
+            string contractId,string contractNo, string createdBy, DateTime createdDate, string lastModifiedBy,
             DateTime? lastModifiedDate)
         {
             this.Id = Id;
@@ -42,7 +46,9 @@ namespace VendorManagement.Contracts
             this.EndDate = endDate;
             this.Status= status;
             this.PartnerId = partnerId;
+            this.Partner = partner;
             this.ContractId = contractId;
+            this.ContractNo = contractNo;
             this.CreatedBy = createdBy;
             this.CreatedDate = createdDate;
             this.LastModifiedBy = lastModifiedBy;

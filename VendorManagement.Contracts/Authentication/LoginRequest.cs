@@ -26,12 +26,19 @@ namespace VendorManagement.Contracts.Authentication
 
         public Guid roleid { get; set; }    
 
-        public UserDetail(Guid guid, string displayName,Guid partnerid, Guid roleid)
+        public string partner { get; set; }
+
+        public string role { get; set; }
+
+
+        public UserDetail(Guid guid, string displayName,Guid partnerid, Guid roleid,string partner, string role)
         {
             this.userid = guid;
             this.displayName= displayName;
             this.partnerid = partnerid;
             this.roleid = roleid;
+            this.partner = partner;
+            this.role = role;
         }
     }
 }

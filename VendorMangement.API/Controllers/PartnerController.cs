@@ -54,9 +54,9 @@ namespace VendorMangement.API.Controllers
         }
         [HttpGet()]
         [Route("GetAll")]
-        public IActionResult GetAll(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public IActionResult GetAll(string filterKey, int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
-            ErrorOr<PartnerResponseRoot> getAllPartnerMethodResult = _partnerService.GetAll(pageNo, pageSize, sortCol, sortType);
+            ErrorOr<PartnerResponseRoot> getAllPartnerMethodResult = _partnerService.GetAll(filterKey,pageNo, pageSize, sortCol, sortType);
             return getAllPartnerMethodResult.Match(
                   partnerResponses => Ok(partnerResponses),
                   errors => Problem(errors)
