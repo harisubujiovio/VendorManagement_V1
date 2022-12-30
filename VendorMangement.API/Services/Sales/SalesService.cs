@@ -85,15 +85,12 @@ namespace VendorMangement.API.Services
             }
             return keyValues;
         }
-        public ErrorOr<SalesResponseRoot> GetAll(string partnerId,int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        public ErrorOr<SalesResponseRoot> GetAll(string partnerId, int pageNo, int pageSize, string sortCol = "", string sortType = "", string filterKey = "")
         {
             SalesResponseRoot salesResponseRoot = new();
+            this.AddFilters("partnerId", SqlDbType.UniqueIdentifier, string.IsNullOrEmpty(partnerId) ? Guid.Empty : new Guid(partnerId));
+            this.AddFilters("filterKey", SqlDbType.VarChar, string.IsNullOrEmpty(filterKey) ? string.Empty : filterKey);
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
-            SqlParameter sqlParameter = new SqlParameter();
-            sqlParameter.ParameterName = "@partnerId";
-            sqlParameter.SqlDbType = SqlDbType.UniqueIdentifier;
-            sqlParameter.Value = string.IsNullOrEmpty(partnerId) ? Guid.Empty : new Guid(partnerId);
-            parameters.Add(sqlParameter);
 
             _vendorDbOperator.InitializeOperator("vm_sp_GetSales", CommandType.StoredProcedure, parameters);
             IDataReader dr = _queryExecutor.ExecuteReader();

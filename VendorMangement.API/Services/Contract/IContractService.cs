@@ -18,6 +18,6 @@ namespace VendorMangement.API.Services
 
         ErrorOr<ContractResponseRoot> GetAll(string partnerId,
             string contractTypeId = "",string commissionMethodId = "",string contractStatusId = "",
-            int pageNo = 0, int pageSize = 10, string sortCol = "", string sortType = "");
+            int pageNo = 0, int pageSize = 10, string sortCol = "", string sortType = "", string filterKey = "");
     }
 }

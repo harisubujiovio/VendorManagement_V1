@@ -15,6 +15,6 @@ namespace VendorMangement.API.Services
         ErrorOr<Deleted> DeleteStatement(Guid id);
         ErrorOr<IEnumerable<ResourceDictionary>> GetDictionary();
 
-        ErrorOr<StatementResponseRoot> GetAll(string partnerId,string contractId, int pageNo, int pageSize, string sortCol = "", string sortType = "");
+        ErrorOr<StatementResponseRoot> GetAll(string partnerId,string contractId, int pageNo, int pageSize, string sortCol = "", string sortType = "", string filterKey = "");
     }
 }

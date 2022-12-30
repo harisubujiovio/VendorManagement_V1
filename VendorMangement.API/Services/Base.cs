@@ -5,6 +5,7 @@ namespace VendorMangement.API.Services
 {
     public class Base
     {
+        Dictionary<string, Tuple<SqlDbType, object>> filters = new();
         public int AgainstInt(object obj)
         {
 
@@ -259,7 +260,15 @@ namespace VendorMangement.API.Services
 
             return TimeSpan.Parse(obj.ToString());
         }
-        public List<SqlParameter> GetPaginationParameters(int pageNo, int pageSize, string sortCol = "", string sortType = "")
+        protected void AddFilters(string paramName, SqlDbType sqlDbType, object value)
+        {
+            if (!filters.ContainsKey(paramName))
+            {
+                Tuple<SqlDbType, object> tuple = new(sqlDbType, value);
+                filters.Add(paramName, tuple);
+            }
+        }
+        protected List<SqlParameter> GetPaginationParameters(int pageNo, int pageSize, string sortCol = "", string sortType = "")
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
             SqlParameter sqlParameter = new SqlParameter();
@@ -289,6 +298,19 @@ namespace VendorMangement.API.Services
                 sqlParameter.SqlDbType = SqlDbType.VarChar;
                 sqlParameter.Value = sortType;
                 parameters.Add(sqlParameter);
+            }
+
+            if(filters != null)
+            {
+                foreach(var filter in filters)
+                {
+                    Tuple<SqlDbType, object> filterValue = filter.Value;
+                    sqlParameter = new SqlParameter();
+                    sqlParameter.ParameterName = "@" + filter.Key;
+                    sqlParameter.SqlDbType = filterValue.Item1;
+                    sqlParameter.Value = filterValue.Item2;
+                    parameters.Add(sqlParameter);
+                }
             }
             return parameters;
         }

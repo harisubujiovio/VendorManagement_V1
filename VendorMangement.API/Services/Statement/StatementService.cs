@@ -72,23 +72,15 @@ namespace VendorMangement.API.Services
           
         }
         public ErrorOr<StatementResponseRoot> GetAll(string partnerId, string contractId, 
-            int pageNo, int pageSize, string sortCol = "", string sortType = "")
+            int pageNo, int pageSize, string sortCol = "", string sortType = "",string filterKey = "")
         {
             StatementResponseRoot statementResponseRoot = new();
+            this.AddFilters("partnerId", SqlDbType.UniqueIdentifier, string.IsNullOrEmpty(partnerId) ? Guid.Empty : new Guid(partnerId));
+            this.AddFilters("contractId", SqlDbType.UniqueIdentifier, string.IsNullOrEmpty(contractId) ? Guid.Empty : new Guid(contractId));
+            this.AddFilters("filterKey", SqlDbType.VarChar, string.IsNullOrEmpty(filterKey) ? string.Empty : filterKey);
+
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
-            SqlParameter sqlParameter = new SqlParameter();
-            sqlParameter.ParameterName = "@partnerId";
-            sqlParameter.SqlDbType = SqlDbType.UniqueIdentifier;
-            sqlParameter.Value = string.IsNullOrEmpty(partnerId) ? Guid.Empty : new Guid(partnerId);
-            parameters.Add(sqlParameter);
-
-            sqlParameter = new SqlParameter();
-            sqlParameter.ParameterName = "@contractId";
-            sqlParameter.SqlDbType = SqlDbType.UniqueIdentifier;
-            sqlParameter.Value = string.IsNullOrEmpty(contractId) ? Guid.Empty : new Guid(contractId);
-            parameters.Add(sqlParameter);
-
-
+          
             _vendorDbOperator.InitializeOperator("vm_sp_GetStatements", CommandType.StoredProcedure, parameters);
             IDataReader dr = _queryExecutor.ExecuteReader();
             List<StatementResponse> statementResponses = new();

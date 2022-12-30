@@ -15,6 +15,6 @@ namespace VendorMangement.API.Services
         ErrorOr<Deleted> DeleteSales(Guid id);
         ErrorOr<Dictionary<Guid, string>> GetDictionary();
 
-        ErrorOr<SalesResponseRoot> GetAll(string partnerId,int pageNo, int pageSize, string sortCol = "", string sortType = "");
+        ErrorOr<SalesResponseRoot> GetAll(string partnerId,int pageNo, int pageSize, string sortCol = "", string sortType = "", string filterKey = "");
     }
 }

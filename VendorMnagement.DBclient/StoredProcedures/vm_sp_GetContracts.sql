@@ -1,7 +1,7 @@
-/****** Object:  StoredProcedure [dbo].[vm_sp_GetContracts]    Script Date: 24-12-2022 20:53:59 ******/
+/****** Object:  StoredProcedure [dbo].[vm_sp_GetContracts]    Script Date: 29-12-2022 11:58:11 ******/
 DROP PROCEDURE IF EXISTS [dbo].[vm_sp_GetContracts]
 GO
-/****** Object:  StoredProcedure [dbo].[vm_sp_GetContracts]    Script Date: 24-12-2022 20:53:59 ******/
+/****** Object:  StoredProcedure [dbo].[vm_sp_GetContracts]    Script Date: 29-12-2022 11:58:11 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -24,7 +24,17 @@ BEGIN
   SET @RowsPerPage = @PageSize
 
 
-   select *, COUNT(*) OVER() as TotalCount from Contracts
+   select *,appPartner.PartnerName as Partner,appContractStatus.Description as ContractStatus,
+   appContractTypes.Description as ContractType,appCommissionMethods.Description as CommissionMethod,
+   COUNT(*) OVER() as TotalCount from Contracts appContract
+   join Partners appPartner
+   on appContract.PartnerId = appPartner.Guid
+   join ContractStatus appContractStatus
+   on appContract.ContractStatusId = appContractStatus.Guid
+   join ContractTypes appContractTypes
+   on appContract.ContractTypeId = appContractTypes.Guid
+   join CommissionMethods appCommissionMethods
+   on appContract.CommissionMethodId = appCommissionMethods.Guid
    where PartnerId = Case when @partnerId = '00000000-0000-0000-0000-000000000000' Then PartnerId
    else @partnerId end and
    ContractTypeId = Case when @contractTypeId = '00000000-0000-0000-0000-000000000000' Then ContractTypeId
@@ -34,8 +44,8 @@ BEGIN
    ContractStatusId = Case when @contractStatusId = '00000000-0000-0000-0000-000000000000' Then ContractStatusId
    else @contractStatusId end
    ORDER BY 
-   CASE WHEN @SortingCol = 'CreatedDate' AND @SortType = 'ASC' THEN CreatedDate END,
-   CASE WHEN @SortingCol = 'CreatedDate' AND @SortType = 'DESC' THEN CreatedDate END DESC
+   CASE WHEN @SortingCol = 'CreatedDate' AND @SortType = 'ASC' THEN appContract.CreatedDate END,
+   CASE WHEN @SortingCol = 'CreatedDate' AND @SortType = 'DESC' THEN appContract.CreatedDate END DESC
    OFFSET ((@PageNumber -1) * @RowsPerPage) ROWS
    FETCH NEXT @RowsPerPage ROWS ONLY
 END

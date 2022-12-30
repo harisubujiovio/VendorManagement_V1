@@ -79,34 +79,17 @@ namespace VendorMangement.API.Services
      
         public ErrorOr<ContractResponseRoot> GetAll(string partnerId,
             string contractTypeId, string commissionMethodId, string contractStatusId,
-            int pageNo, int pageSize, string sortCol = "", string sortType = "")
+            int pageNo, int pageSize, string sortCol = "", string sortType = "", string filterKey = "")
         {
             ContractResponseRoot contractResponseRoot = new();
+
+            this.AddFilters("partnerId", SqlDbType.UniqueIdentifier, string.IsNullOrEmpty(partnerId) ? Guid.Empty : new Guid(partnerId));
+            this.AddFilters("contractTypeId", SqlDbType.UniqueIdentifier, string.IsNullOrEmpty(contractTypeId) ? Guid.Empty : new Guid(contractTypeId));
+            this.AddFilters("commissionMethodId", SqlDbType.UniqueIdentifier, string.IsNullOrEmpty(commissionMethodId) ? Guid.Empty : new Guid(commissionMethodId));
+            this.AddFilters("contractStatusId", SqlDbType.UniqueIdentifier, string.IsNullOrEmpty(contractStatusId) ? Guid.Empty : new Guid(contractStatusId));
+            this.AddFilters("filterKey", SqlDbType.VarChar, string.IsNullOrEmpty(filterKey) ? string.Empty : filterKey);
             var parameters = this.GetPaginationParameters(pageNo, pageSize, sortCol, sortType);
-            SqlParameter sqlParameter = new SqlParameter();
-            sqlParameter.ParameterName = "@partnerId";
-            sqlParameter.SqlDbType = SqlDbType.UniqueIdentifier;
-            sqlParameter.Value = string.IsNullOrEmpty(partnerId) ? Guid.Empty : new Guid(partnerId);
-            parameters.Add(sqlParameter);
-
-            sqlParameter = new SqlParameter();
-            sqlParameter.ParameterName = "@contractTypeId";
-            sqlParameter.SqlDbType = SqlDbType.UniqueIdentifier;
-            sqlParameter.Value = string.IsNullOrEmpty(contractTypeId) ? Guid.Empty : new Guid(contractTypeId);
-            parameters.Add(sqlParameter);
-
-            sqlParameter = new SqlParameter();
-            sqlParameter.ParameterName = "@commissionMethodId";
-            sqlParameter.SqlDbType = SqlDbType.UniqueIdentifier;
-            sqlParameter.Value = string.IsNullOrEmpty(commissionMethodId) ? Guid.Empty : new Guid(commissionMethodId);
-            parameters.Add(sqlParameter);
-
-            sqlParameter = new SqlParameter();
-            sqlParameter.ParameterName = "@contractStatusId";
-            sqlParameter.SqlDbType = SqlDbType.UniqueIdentifier;
-            sqlParameter.Value = string.IsNullOrEmpty(contractStatusId) ? Guid.Empty : new Guid(contractStatusId);
-            parameters.Add(sqlParameter);
-
+            
             _vendorDbOperator.InitializeOperator("vm_sp_GetContracts", CommandType.StoredProcedure, parameters);
             IDataReader dr = _queryExecutor.ExecuteReader();
             List<ContractResponse> contractResponses = new();
